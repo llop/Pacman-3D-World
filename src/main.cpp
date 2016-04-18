@@ -31,8 +31,6 @@ int main(void) {
     mogl->getCamera().setCenter(glm::vec3(0, 0, 1));
     mogl->getCamera().setUp(glm::vec3(0, 1, 0));
 
-    g.addPlugin<KinematicWorld>();
-    
     // add game manager
     g.addPlugin<GamePlugin>();
 
