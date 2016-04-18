@@ -7,7 +7,7 @@ MenuScene::MenuScene(SceneId id, Game* game) : Scene(id, game) {
 }
 
 MenuScene::~MenuScene() {
-  delScreenAct();
+  //delScreenAct();  // Al cerrar la app: Intentando eliminar un actor inexistente
 }
 
 
@@ -18,7 +18,7 @@ void MenuScene::init() {
 }
 
 void MenuScene::destroy() {
-  delScreenAct();
+  //delScreenAct();  // Al cerrar la app: Intentando eliminar un actor inexistente
 }
 
 
