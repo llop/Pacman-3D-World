@@ -3,11 +3,6 @@
 #include "GamePlugin.hpp"
 
 
-
-#include <iostream>
-using namespace std;
-
-
 #define TILE_SIZE 48.f
 #define WINDOW_WIDTH 1024.f
 #define WINDOW_HEIGHT 720.f
@@ -26,6 +21,8 @@ int main(void) {
     settings.minorVersion = 3;
     auto mogl = g.addPlugin<mogl::MultimediaOGL>(sf::VideoMode(WINDOW_WIDTH, WINDOW_HEIGHT), 
         "Pac-man", sf::Style::Default, settings);
+
+    // default camera
     mogl->getCamera().setOrthogonal(0, -ORTHO_WIDTH, ORTHO_HEIGHT, 0);
     mogl->getCamera().setPosition(glm::vec3(0, 0, -1));
     mogl->getCamera().setCenter(glm::vec3(0, 0, 1));

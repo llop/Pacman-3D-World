@@ -15,6 +15,7 @@ private:
   void delScene();
   Scene* nextScene();
   void scenePreUpdate();
+  void scenePostUpdate();
   
 
 public:

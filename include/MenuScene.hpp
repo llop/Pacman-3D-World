@@ -15,6 +15,9 @@ enum MenuScreen {
   MENU_SCR_TITLE, MENU_SCR_CONTROLS, MENU_SCR_CREDITS, MENU_SCR_HI_SCORE
 };
 
+// nanos in between accepting more keyboard input: .24s
+#define MENU_KEY_ACCEPT_DELAY_NANOS 240000000
+
 
 class MenuScene : public Scene {
 protected:
@@ -34,6 +37,8 @@ public:
 
   void screen(MenuScreen scr);
   void startGame();
+
+  void logic();
 
 };
 

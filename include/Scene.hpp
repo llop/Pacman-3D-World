@@ -40,9 +40,13 @@ public:
   virtual SceneId id() const { return _id; }
   virtual SceneState state() const { return _state; }
 
+  const Clock &clock() const { return _clk; }
 
-  virtual void init() = 0;
-  virtual void destroy() = 0;
+
+  virtual void init() {};
+  virtual void destroy() {};
+
+  virtual void logic() {};
 
 };
 

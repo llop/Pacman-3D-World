@@ -22,11 +22,32 @@ protected:
 
   MenuScene* _menu;
   MenuOption _selectedOption;
+  long _lastKeyAccept;
+
 
 public:
 
   MenuTitleBehavior(MenuScene* menu);
   ~MenuTitleBehavior();
+  void init();
+  void fixedUpdate();
+  void onActivate();
+  void onDeactivate();
+  void onDestroy();
+
+};
+
+
+class MenuBackToTitleBehavior : public Behavior {
+protected:
+
+  MenuScene* _menu;
+  long _lastKeyAccept;
+
+public:
+
+  MenuBackToTitleBehavior(MenuScene* menu);
+  ~MenuBackToTitleBehavior();
   void init();
   void fixedUpdate();
   void onActivate();
