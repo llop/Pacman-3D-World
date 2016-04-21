@@ -12,6 +12,7 @@ GamePlugin::~GamePlugin() {
   delScene();
 }
 
+
 void GamePlugin::gameStart() {
   // start off at the menu
   _scene = new MenuScene(SCENE_MENU, &game());
@@ -58,9 +59,9 @@ void GamePlugin::scenePreUpdate() {
 }
 
 void GamePlugin::scenePostUpdate() {
-  if (_scene->state() == SCENE_LOADED) {
+  //if (_scene->state() == SCENE_LOADED) {
     _scene->logic();
-  }
+  //}
 }
 
 void GamePlugin::preUpdate() {

@@ -6,6 +6,12 @@
 using namespace std;
 
 
+#define FADE_IN_DURATION 1000000000
+#define FADE_OUT_DURATION 1000000000
+
+#define CODA_DURATION FADE_OUT_DURATION
+
+
 //-----------------------------------------------------------------------------------
 // 
 // base level scene
@@ -17,27 +23,20 @@ protected:
 
   list<Actor*> _actors;
 
-  void delActors() {
-    for (auto actor : _actors) {
-      _game->destroy(actor);
-    }
-    _actors.clear();
-  }
+  long _codaStart;
+  virtual void signalDone();
+
+  void delActors();
 
 public:
 
-  LevelScene(SceneId id, Game* game) : Scene(id, game) {};
-  virtual ~LevelScene() {
-    delActors();
-  };
+  LevelScene(SceneId id, Game* game);
+  virtual ~LevelScene();
 
-  virtual void init() {
-    _clk.reset();
-    _state = SCENE_LOADED;
-  };
-  virtual void destroy() {
-    delActors();
-  };
+  virtual void init();
+  virtual void destroy();
+
+  virtual void logic();
 
 };
 

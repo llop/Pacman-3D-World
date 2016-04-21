@@ -5,7 +5,6 @@
 #include "Scene.hpp"
 
 
-
 class GamePlugin : public hum::Plugin {
 private:
 

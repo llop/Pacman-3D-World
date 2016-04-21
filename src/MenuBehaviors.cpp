@@ -13,18 +13,21 @@
 //-----------------------------------------------------------------------------------
 
 MenuTitleBehavior::MenuTitleBehavior(MenuScene* menu) {
+  _active = false;
   _menu = menu;
   _selectedOption = MENU_OP_START;
   _lastKeyAccept = _menu->clock().getTime().asNanoseconds();
 }
 
 MenuTitleBehavior::~MenuTitleBehavior() {
-
 }
+
+
 #include <iostream>
 using namespace std;
 
 void MenuTitleBehavior::init() {
+  _active = true;
   _lastKeyAccept = _menu->clock().getTime().asNanoseconds();
 }
 
@@ -32,6 +35,7 @@ void MenuTitleBehavior::init() {
 
 // just handles keyboard input for now
 void MenuTitleBehavior::fixedUpdate() {
+  if (!_active) return;
 
   long now = _menu->clock().getTime().asNanoseconds();
   long delta = now - _lastKeyAccept;
@@ -79,11 +83,11 @@ void MenuTitleBehavior::fixedUpdate() {
 }
 
 void MenuTitleBehavior::onActivate() {
-
+  _active = true;
 }
 
 void MenuTitleBehavior::onDeactivate() {
-
+  _active = false;
 }
 
 void MenuTitleBehavior::onDestroy() {
@@ -96,6 +100,7 @@ void MenuTitleBehavior::onDestroy() {
 //-----------------------------------------------------------------------------------
 
 MenuBackToTitleBehavior::MenuBackToTitleBehavior(MenuScene* menu) {
+  _active = false;
   _menu = menu;
   _lastKeyAccept = _menu->clock().getTime().asNanoseconds();
 }
@@ -105,10 +110,13 @@ MenuBackToTitleBehavior::~MenuBackToTitleBehavior() {
 }
 
 void MenuBackToTitleBehavior::init() {
+  _active = true;
   _lastKeyAccept = _menu->clock().getTime().asNanoseconds();
 }
 
 void MenuBackToTitleBehavior::fixedUpdate() {
+  if (!_active) return;
+
   long now = _menu->clock().getTime().asNanoseconds();
   long delta = now - _lastKeyAccept;
   if (delta < MENU_KEY_ACCEPT_DELAY_NANOS) return;
@@ -121,11 +129,11 @@ void MenuBackToTitleBehavior::fixedUpdate() {
 }
 
 void MenuBackToTitleBehavior::onActivate() {
-
+  _active = true;
 }
 
 void MenuBackToTitleBehavior::onDeactivate() {
-
+  _active = false;
 }
 
 void MenuBackToTitleBehavior::onDestroy() {

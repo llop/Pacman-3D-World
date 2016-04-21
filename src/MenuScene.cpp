@@ -10,8 +10,7 @@ MenuScene::~MenuScene() {
   delScreenAct();  // Al cerrar la app: Intentando eliminar un actor inexistente
 }
 
-
-void MenuScene::init() { 
+void MenuScene::init() {
   _clk.reset();
   _state = SCENE_LOADED;
   screen(MENU_SCR_TITLE); 
@@ -38,28 +37,20 @@ void MenuScene::screen(MenuScreen scr) {
   _screenAct = _game->makeActor();
   switch (_screen) {
     case MENU_SCR_TITLE:
-
       // TODO: set behaviors to render an honest to goodness screen
       _screenAct->addBehavior<Rectangle>(5, 5, sf::Color::Red);
-    
       _screenAct->addBehavior<MenuTitleBehavior>(this);
       break;
     case MENU_SCR_CONTROLS:
-    
       _screenAct->addBehavior<Rectangle>(5, 5, sf::Color::Green);
-    
       _screenAct->addBehavior<MenuBackToTitleBehavior>(this);
       break;
     case MENU_SCR_CREDITS:
-    
       _screenAct->addBehavior<Rectangle>(5, 5, sf::Color::Blue);
-    
       _screenAct->addBehavior<MenuBackToTitleBehavior>(this);
       break;
     case MENU_SCR_HI_SCORE:
-    
       _screenAct->addBehavior<Rectangle>(5, 5, sf::Color::Yellow);
-    
       _screenAct->addBehavior<MenuBackToTitleBehavior>(this);
       break;
     default:

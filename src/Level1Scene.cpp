@@ -27,8 +27,12 @@ void Level1Scene::destroy() {
 }
 
 void Level1Scene::logic() {
-  if (_clk.getTime().asNanoseconds()>1000000000) {
-    _state = SCENE_DONE;
+  LevelScene::logic();
+
+  if (_state < SCENE_CODA) {
+    if (_clk.getTime().asNanoseconds()>3000000000) {
+      signalDone();
+    }
   }
 }
 

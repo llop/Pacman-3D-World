@@ -12,7 +12,7 @@ enum SceneId {
 };
 
 enum SceneState {
-  SCENE_FRESH, SCENE_LOADED, SCENE_DONE
+  SCENE_FRESH, SCENE_LOADED, SCENE_CODA, SCENE_DONE
 };
 
 
@@ -26,27 +26,22 @@ protected:
   SceneState _state;
   
   Clock _clk;
+  
 
 public:
 
-  Scene(SceneId id, Game* game) {
-    _id = id;
-    _game = game;
-    _mogl = _game->getPlugin<MultimediaOGL>();
-    _state = SCENE_FRESH;
-  }
-  virtual ~Scene() {};
+  Scene(SceneId id, Game* game);
+  virtual ~Scene();
   
-  virtual SceneId id() const { return _id; }
-  virtual SceneState state() const { return _state; }
+  virtual SceneId id() const;
+  virtual SceneState state() const;
+  virtual const Clock &clock() const;
 
-  const Clock &clock() const { return _clk; }
 
+  virtual void init();
+  virtual void destroy();
 
-  virtual void init() {};
-  virtual void destroy() {};
-
-  virtual void logic() {};
+  virtual void logic();
 
 };
 

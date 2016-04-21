@@ -20,6 +20,7 @@ enum MenuOption {
 class MenuTitleBehavior : public Behavior {
 protected:
 
+  bool _active;
   MenuScene* _menu;
   MenuOption _selectedOption;
   long _lastKeyAccept;
@@ -41,6 +42,7 @@ public:
 class MenuBackToTitleBehavior : public Behavior {
 protected:
 
+  bool _active;
   MenuScene* _menu;
   long _lastKeyAccept;
 
