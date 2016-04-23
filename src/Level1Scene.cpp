@@ -11,15 +11,8 @@ Level1Scene::~Level1Scene() {
 }
 
 void Level1Scene::init() {
+  loadLevel("bench.obj");
   LevelScene::init();
-
-  // add a bunch of actors
-  // + they colliders and behaviors?
-  // the ground, walls, other shits on the map
-
-  auto actor = _game->makeActor();
-  actor->addBehavior<Rectangle>(5, 5, sf::Color::Cyan);
-  _actors.insert(_actors.end(), actor);
 }
 
 void Level1Scene::destroy() {

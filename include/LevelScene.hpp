@@ -24,9 +24,10 @@ protected:
   list<Actor*> _actors;
 
   long _codaStart;
-  virtual void signalDone();
 
-  void delActors();
+  virtual void signalDone();
+  virtual void delActors();
+  virtual void loadLevel(const string &levelObjFile);
 
 public:
 
@@ -37,6 +38,9 @@ public:
   virtual void destroy();
 
   virtual void logic();
+  
+  virtual void applyPhysics();
+  virtual void checkCollisions();
 
 };
 

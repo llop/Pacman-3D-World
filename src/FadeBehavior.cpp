@@ -81,7 +81,7 @@ void FadeBehavior::fixedUpdate() {
     cleanup();
     return;
   }
-  Drawable::fixedUpdate();
+  //Drawable::fixedUpdate();
 }
 
 void FadeBehavior::draw() {
@@ -94,6 +94,7 @@ void FadeBehavior::draw() {
   shaderProgram()->setUniform4f("color", _color.r/255.f, _color.g/255.f, _color.b/255.f, alpha());
   glEnableVertexAttribArray(_pos);
   glDrawArrays(GL_TRIANGLES, 0, 6);
+  glBindVertexArray(0);
 
   glDisable(GL_BLEND);
 

@@ -27,5 +27,5 @@ void Scene::init() {
 void Scene::destroy() {
 }
 
-void Scene::logic() {
+void Scene::logic() { 
 }

@@ -1,10 +1,7 @@
 #pragma once
 
 
-#include "hummingbird/hum.hpp"
-#include "MOGL/MOGL.hpp"
-using namespace hum;
-using namespace mogl;
+#include "GameGlobals.hpp"
 
 
 enum SceneId {
@@ -26,7 +23,7 @@ protected:
   SceneState _state;
   
   Clock _clk;
-  
+
 
 public:
 

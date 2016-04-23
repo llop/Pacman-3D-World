@@ -1,5 +1,6 @@
 #include "LevelScene.hpp"
 #include "FadeBehavior.hpp"
+#include "LevelBehavior.hpp"
 
 
 void LevelScene::signalDone() {
@@ -26,6 +27,13 @@ LevelScene::~LevelScene() {
 }
 
 
+
+void LevelScene::loadLevel(const string &levelObjFile) {
+  auto actor = _game->makeActor();
+  actor->addBehavior<LevelBehavior>(levelObjFile);
+  _actors.push_back(actor);
+}
+
 void LevelScene::init() {
   auto actor = _game->makeActor();
   actor->addBehavior<FadeBehavior>(FADE_IN, FADE_IN_DURATION);
@@ -45,5 +53,17 @@ void LevelScene::logic() {
     if (delta>=CODA_DURATION) _state = SCENE_DONE;
   }
 }
+
+
+
+void LevelScene::applyPhysics() {
+
+}
+
+void LevelScene::checkCollisions() {
+
+}
+
+
 
 

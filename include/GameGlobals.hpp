@@ -8,6 +8,15 @@
 #define ORTHO_HEIGHT (WINDOW_HEIGHT / TILE_SIZE)
 
 
+#include "hummingbird/hum.hpp"
+#include "MOGL/MOGL.hpp"
+using namespace hum;
+using namespace mogl;
+
 
 #include <iostream>
+#include <vector>
+#include <map>
 using namespace std;
+
+
