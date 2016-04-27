@@ -1,48 +1,84 @@
+#include "hummingbird/hum.hpp"
+#include "MOGL/MOGL.hpp"
 #include "GamePlugin.hpp"
-#include "GameGlobals.hpp"
 
 
-
+#define TILE_SIZE 48.f
+#define WINDOW_WIDTH 1024.f
+#define WINDOW_HEIGHT 720.f
+#define ORTHO_WIDTH (WINDOW_WIDTH / TILE_SIZE)
+#define ORTHO_HEIGHT (WINDOW_HEIGHT / TILE_SIZE)
 
 
 int main(void) {
-  Game g;
+    hum::Game g;
 
-  // add media manager
-  sf::ContextSettings settings;
-  settings.depthBits = 24;
-  settings.stencilBits = 8;
-  settings.antialiasingLevel = 4;
-  settings.majorVersion = 3;
-  settings.minorVersion = 3;
-  auto mogl = g.addPlugin<MultimediaOGL>(sf::VideoMode(WINDOW_WIDTH, WINDOW_HEIGHT), 
-    "Pac-man", sf::Style::Default, settings);
+    // add media manager
+    sf::ContextSettings settings;
+    settings.antialiasingLevel = 2;
+    settings.depthBits = 24;
+    settings.majorVersion = 3;
+    settings.minorVersion = 3;
+    auto mogl = g.addPlugin<mogl::MultimediaOGL>(sf::VideoMode(WINDOW_WIDTH, WINDOW_HEIGHT),
+        "Pac-man", sf::Style::Default, settings);
 
-  // custom shaders
-  Shader* vertexShader = new Shader();
-  vertexShader->loadFromSource(Shader::Type::VERTEX_SHADER, 
-    #include "../shaders/basic.vert"
-  );  
-  Shader* fragmentShader = new Shader();
-  fragmentShader->loadFromSource(Shader::Type::FRAGMENT_SHADER, 
-    #include "../shaders/basic.frag"
-  );
-  
-  ShaderProgramManager* shaderManager = &mogl->shaderPrograms();
-  shaderManager->load("_pac_basic", { *vertexShader, *fragmentShader, "out_color" });
+    // default camera
+    mogl->getCamera().setPerspective(90, WINDOW_WIDTH / WINDOW_HEIGHT);
+    mogl->getCamera().setPosition(glm::vec3(0, 0, -1));
+    mogl->getCamera().setCenter(glm::vec3(0, 0, 1));
+    mogl->getCamera().setUp(glm::vec3(0, 1, 0));
 
-  // default camera
-  mogl->getCamera().setOrthogonal(-9, 9, -9, 9);
-  mogl->getCamera().setPosition(glm::vec3(10, 10, 10));
-  mogl->getCamera().setCenter(glm::vec3(0, 0, 0));
-  mogl->getCamera().setUp(glm::vec3(0, 1, 0));
+    // add game manager
+    //g.addPlugin<GamePlugin>();
+    //
 
+    auto a = g.makeActor();
+    mogl::Model model;
+    model.loadFromString(R"(
+v 0 0 1
+v 1 0 1
+v 1 1 1
+v 0 1 1
+f 1 2 3
+f 1 3 4
+)");
+    mogl::VertexArray va;
+    va.loadFromModel(model);
+    mogl::Shader vs, fs;
+    vs.loadFromSource(mogl::Shader::Type::VERTEX_SHADER, R"(
+#version 330
 
-  // add game manager
-  //g.addPlugin<KinematicWorld>();
-  g.addPlugin<GamePlugin>();
+uniform mat4 projection, view, model;
+in vec3 position;
 
-  // loop
-  g.run();
-  return 0;
+void main()
+{
+    gl_Position = projection * view * model * vec4(position, 1.0);
+}
+)");
+    hum::assert_msg(vs.isCompiled(), "Error compiling plain.vert\n" + vs.log());
+    fs.loadFromSource(mogl::Shader::Type::FRAGMENT_SHADER, R"(
+#version 330
+
+uniform vec4 color;
+out vec4 out_color;
+
+void main()
+{
+    out_color = color;
+}
+)");
+    hum::assert_msg(fs.isCompiled(), "Error compiling plain.vert\n" + fs.log());
+
+    mogl->shaderPrograms().load("teapot", mogl::ShaderProgramDef{vs, fs, "out_color"});
+    auto mesh = a->addBehavior<mogl::Mesh>(va);
+    mesh->setShaderProgram(mogl->shaderPrograms().get("teapot"));
+
+    mesh->setOrigin((va.getBoundingBox().first + va.getBoundingBox().second)/2.f);
+
+    a->transform().position.z = 1000.f;
+
+    // loop
+    g.run();
+    return 0;
 }
