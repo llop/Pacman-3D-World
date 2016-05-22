@@ -1,7 +1,36 @@
 ﻿using UnityEngine;
 using System.Collections;
 
-public enum Direction { Front, Back, Left, Right, None };
+
+
+
+public static class DirectionMethods {
+  public static bool isOpposite(this Direction direction, Direction otherDirection) {
+    if (direction == Direction.Front) return otherDirection == Direction.Back;
+    if (direction == Direction.Back) return otherDirection == Direction.Front;
+    if (direction == Direction.Right) return otherDirection == Direction.Left;
+    if (direction == Direction.Left) return otherDirection == Direction.Right;
+    return false;
+  }
+  public static Direction getOpposite(this Direction direction) {
+    if (direction == Direction.Front) return Direction.Back;
+    if (direction == Direction.Back) return Direction.Front;
+    if (direction == Direction.Right) return Direction.Left;
+    if (direction == Direction.Left) return Direction.Right;
+    return Direction.None;
+  }
+}
+
+public enum Direction { 
+  Front, 
+  Back, 
+  Left, 
+  Right, 
+  None 
+};
+
+
+
 
 public class NavGraphWalker : MonoBehaviour {
 	public NavNode currentNode;

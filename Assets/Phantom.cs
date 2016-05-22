@@ -24,7 +24,7 @@ public class Phantom : NavGraphWalker {
 	
 	// Update is called once per frame
 	protected override void Update () {
-		if (Input.GetKeyDown (KeyCode.C) && alive) {
+		if (Input.GetKeyDown (KeyCode.C) && alive) { 
 			alive = false;
 			forceGetNewDirection = true;
 		}

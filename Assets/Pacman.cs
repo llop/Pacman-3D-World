@@ -8,12 +8,12 @@ public class Pacman : NavGraphWalker {
 	public float jumpHeight = 3;
 	public float jumpingTime = 3;
 	// Use this for initialization
-	void Start () {
+	protected override void Start () {
 		base.Start ();
 	}
 
 	// Update is called once per frame
-	void Update () {
+	protected override void Update () {
 		// Input
 		if (Input.GetKeyDown (KeyCode.UpArrow)) {
 			inputDirection = Direction.Front;
