@@ -1,0 +1,157 @@
+fileFormatVersion: 2
+guid: 37e811aeebac04ef697ec84614be2a9a
+timeCreated: 1464015655
+licenseType: Free
+ModelImporter:
+  serializedVersion: 19
+  fileIDToRecycleName:
+    100000: Armature
+    100002: BD-GhostBase
+    100004: BD-GhostEyes
+    100006: BD-GhostPupils
+    100008: Bone
+    100010: Bone.001
+    100012: Bone.001_end
+    100014: Bone.002
+    100016: Bone.003
+    100018: Bone.005
+    100020: Bone.006
+    100022: Bone.007
+    100024: Bone.008
+    100026: Bone.009
+    100028: Bone.009_end
+    100030: Bone.010
+    100032: Bone.010_end
+    100034: Bone.011
+    100036: Bone.011_end
+    100038: Bone.012
+    100040: Bone.012_end
+    100042: Bone.013
+    100044: Bone.013_end
+    100046: Bone.014
+    100048: Bone.014_end
+    100050: Camera
+    100052: //RootNode
+    100054: Lamp
+    400000: Armature
+    400002: BD-GhostBase
+    400004: BD-GhostEyes
+    400006: BD-GhostPupils
+    400008: Bone
+    400010: Bone.001
+    400012: Bone.001_end
+    400014: Bone.002
+    400016: Bone.003
+    400018: Bone.005
+    400020: Bone.006
+    400022: Bone.007
+    400024: Bone.008
+    400026: Bone.009
+    400028: Bone.009_end
+    400030: Bone.010
+    400032: Bone.010_end
+    400034: Bone.011
+    400036: Bone.011_end
+    400038: Bone.012
+    400040: Bone.012_end
+    400042: Bone.013
+    400044: Bone.013_end
+    400046: Bone.014
+    400048: Bone.014_end
+    400050: Camera
+    400052: //RootNode
+    400054: Lamp
+    2300000: BD-GhostEyes
+    2300002: BD-GhostPupils
+    3300000: BD-GhostEyes
+    3300002: BD-GhostPupils
+    4300000: BD-GhostBase
+    4300002: BD-GhostPupils
+    4300004: BD-GhostEyes
+    7400000: Armature|ArmatureAction
+    7400002: Armature|BD-GhostEyesAction
+    7400004: Armature|BD-GhostPupilsAction
+    7400006: Armature|CameraAction
+    7400008: Armature|LampAction
+    7400010: BD-GhostPupils|BD-GhostEyesAction
+    7400012: BD-GhostPupils|BD-GhostPupilsAction
+    7400014: BD-GhostPupils|CameraAction
+    7400016: BD-GhostPupils|LampAction
+    7400018: BD-GhostEyes|BD-GhostEyesAction
+    7400020: BD-GhostEyes|BD-GhostPupilsAction
+    7400022: BD-GhostEyes|CameraAction
+    7400024: BD-GhostEyes|LampAction
+    7400026: Lamp|BD-GhostEyesAction
+    7400028: Lamp|BD-GhostPupilsAction
+    7400030: Lamp|CameraAction
+    7400032: Lamp|LampAction
+    7400034: Camera|BD-GhostEyesAction
+    7400036: Camera|BD-GhostPupilsAction
+    7400038: Camera|CameraAction
+    7400040: Camera|LampAction
+    9500000: //RootNode
+    13700000: BD-GhostBase
+  materials:
+    importMaterials: 1
+    materialName: 0
+    materialSearch: 1
+  animations:
+    legacyGenerateAnimations: 4
+    bakeSimulation: 0
+    resampleCurves: 1
+    optimizeGameObjects: 0
+    motionNodeName: 
+    animationImportErrors: 
+    animationImportWarnings: 
+    animationRetargetingWarnings: 
+    animationDoRetargetingWarnings: 0
+    animationCompression: 1
+    animationRotationError: 0.5
+    animationPositionError: 0.5
+    animationScaleError: 0.5
+    animationWrapMode: 0
+    extraExposedTransformPaths: []
+    clipAnimations: []
+    isReadable: 1
+  meshes:
+    lODScreenPercentages: []
+    globalScale: 1
+    meshCompression: 0
+    addColliders: 0
+    importBlendShapes: 1
+    swapUVChannels: 0
+    generateSecondaryUV: 0
+    useFileUnits: 1
+    optimizeMeshForGPU: 1
+    keepQuads: 0
+    weldVertices: 1
+    secondaryUVAngleDistortion: 8
+    secondaryUVAreaDistortion: 15.000001
+    secondaryUVHardAngle: 88
+    secondaryUVPackMargin: 4
+    useFileScale: 1
+  tangentSpace:
+    normalSmoothAngle: 60
+    normalImportMode: 0
+    tangentImportMode: 3
+  importAnimation: 1
+  copyAvatar: 0
+  humanDescription:
+    human: []
+    skeleton: []
+    armTwist: 0.5
+    foreArmTwist: 0.5
+    upperLegTwist: 0.5
+    legTwist: 0.5
+    armStretch: 0.05
+    legStretch: 0.05
+    feetSpacing: 0
+    rootMotionBoneName: 
+    hasTranslationDoF: 0
+  lastHumanDescriptionAvatarSource: {instanceID: 0}
+  animationType: 2
+  humanoidOversampling: 1
+  additionalBone: 0
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 
