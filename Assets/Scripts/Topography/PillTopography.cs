@@ -71,11 +71,11 @@ public class PillTopography : PlanetTopography {
     Vector3 planeRight = Vector3.Cross(Vector3.up, center.normalized);
     Vector3 planeUp = Vector3.Cross(planeRight.normalized, center.normalized);
 
-    Vector3 dA = one.transform.position - center;
+    Vector3 dA = two.transform.position - center;
     uCoordA = Vector3.Dot(dA, planeRight);
     vCoordA = Vector3.Dot(dA, planeUp);
 
-    Vector3 dB = two.transform.position - center;
+    Vector3 dB = one.transform.position - center;
     uCoordB = Vector3.Dot(dB, planeRight);
     vCoordB = Vector3.Dot(dB, planeUp);
   }

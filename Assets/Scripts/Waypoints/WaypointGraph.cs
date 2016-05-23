@@ -30,10 +30,10 @@ public class WaypointGraph : MonoBehaviour {
     float diffU = Mathf.Abs(uCoordA - uCoordB);
     float diffV = Mathf.Abs(vCoordA - vCoordB);
     if (diffU > diffV) {
-      if (uCoordA < uCoordB) { one.setLeft(two); two.setRight(one); }
+      if (uCoordA > uCoordB) { one.setLeft(two); two.setRight(one); }
       else { one.setRight(two); two.setLeft(one); }
     } else {
-      if (vCoordA < vCoordB) { one.setBack(two); two.setFront(one); }
+      if (vCoordA > vCoordB) { one.setBack(two); two.setFront(one); }
       else { one.setFront(two); two.setBack(one); }
     }
   }
