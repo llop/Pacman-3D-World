@@ -4,7 +4,7 @@ using System.Collections;
 public class SphereCameraController : MonoBehaviour {
 
 
-  public float cameraHeight = 30f;
+  public float cameraHeight = 35f;
 
 
   private GameObject pacman;

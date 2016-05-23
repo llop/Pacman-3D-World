@@ -1,7 +1,8 @@
 ﻿using UnityEngine;
 using System.Collections;
 
-public class SphereGravityAttractor : GravityAttractor {
+public class PillGravityAttractor : GravityAttractor {
+
 
 
   // attracts a body towards the center of the planet
@@ -9,10 +10,14 @@ public class SphereGravityAttractor : GravityAttractor {
   public override void attract(Transform body) {
     // rotat the body so its up direction is correct
     // then pull it towards the center
-    Vector3 targetDir = (body.position - transform.position).normalized;
+    Vector3 bodyUp = body.position;
+    bodyUp.y = 0;
+    Vector3 targetDir = bodyUp.normalized;
+
     body.rotation = Quaternion.FromToRotation(body.up, targetDir) * body.rotation;
     body.GetComponent<Rigidbody>().AddForce(targetDir * gravity);
   }
+
 
 
 }

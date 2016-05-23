@@ -1,17 +1,17 @@
 ﻿using UnityEngine;
-using System.Collections.Generic;
 using System.Collections;
 
 
 
-
 [RequireComponent (typeof (Rigidbody))]
-public class SphereGravityBody : MonoBehaviour {
+public class GravityBody : MonoBehaviour {
 
-  private SphereGravityAttractor planet;
+
+
+  private GravityAttractor planet;
 
   void Awake() {
-    planet = GameObject.FindGameObjectWithTag(Tags.Planet).GetComponent<SphereGravityAttractor>();
+    planet = GameObject.FindGameObjectWithTag(Tags.Planet).GetComponent<GravityAttractor>();
     GetComponent<Rigidbody>().useGravity = false;
     GetComponent<Rigidbody>().constraints = RigidbodyConstraints.FreezeRotation;
   }
@@ -19,5 +19,6 @@ public class SphereGravityBody : MonoBehaviour {
   void FixedUpdate() {
     planet.attract(transform);
   }
+
 
 }

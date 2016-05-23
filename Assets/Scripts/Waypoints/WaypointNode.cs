@@ -35,7 +35,7 @@ public class WaypointNode : MonoBehaviour {
 
 
   public void Awake() {
-    //GetComponent<MeshRenderer>().enabled = false;
+    //GetComponent<Renderer>().enabled = false;
   }
 
 
