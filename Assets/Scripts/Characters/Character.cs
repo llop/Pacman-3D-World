@@ -7,13 +7,15 @@ using System.Collections;
 public abstract class Character : MonoBehaviour {
 
 
-  
+
+  protected GameManager gameManager;
 	protected Animator anim;
   protected WaypointWalker walker;
 
 
 
-	void Start() {
+  public void Awake() {
+    gameManager = GameManager.Instance;
 		anim = gameObject.GetComponent<Animator>();
     walker = gameObject.GetComponent<WaypointWalker>();
 	}
@@ -22,7 +24,8 @@ public abstract class Character : MonoBehaviour {
 
   protected abstract void setAnimationState();
 
-	void Update() {
+	public void Update() {
+    if (!gameManager.inGame) return;
     setAnimationState();
 	}
 

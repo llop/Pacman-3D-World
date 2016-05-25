@@ -34,13 +34,11 @@ public class PowerPellet : Powerup {
 
       // activate power mode?
       GameManager.Instance.powerPelletEffectStart();
-      //Time.timeScale = 0f;
 
     };
     _endAction = delegate {
       // stop power mode?
       GameManager.Instance.powerPelletEffectEnd();
-      //Time.timeScale = 1f;
       Destroy(gameObject);
     };
   }

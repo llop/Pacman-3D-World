@@ -55,10 +55,6 @@ public class PlaneTopography : PlanetTopography {
     Vector3 uvB = (twoPosition - center);
     uCoordB = uvB.x;
     vCoordB = uvB.z;
-
-
-    Debug.Log("A "+uCoordA+", "+vCoordA);
-    Debug.Log("B "+uCoordB+", "+vCoordB);
   }
 
 

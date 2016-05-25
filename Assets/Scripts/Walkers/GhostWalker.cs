@@ -14,7 +14,6 @@ public class GhostWalker : WaypointWalker {
   //----------------------------------------------------------------------------------------------------------
 
   protected GhostAI ai;
-  protected GameManager gameManager;
 
   protected Collider ghostCollider;
   protected Collider pacmanCollider;
@@ -22,7 +21,6 @@ public class GhostWalker : WaypointWalker {
 
   public override void startState() {
     ai = GetComponent<GhostAI>();
-    gameManager = GameManager.Instance;
 
     ghostCollider = GetComponent<Collider>();
     pacmanCollider = GameObject.FindGameObjectWithTag(Tags.Pacman).GetComponent<Collider>();

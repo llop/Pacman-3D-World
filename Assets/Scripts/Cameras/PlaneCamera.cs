@@ -1,17 +1,15 @@
 ﻿using UnityEngine;
 using System.Collections;
 
-public class PlaneCamera : MonoBehaviour {
 
 
-  private GameObject pacman;
+public class PlaneCamera : GameCamera {
+
+
 
   public float cameraHeight = 15f;
 
 
-  void Start() {
-    pacman = GameObject.FindGameObjectWithTag(Tags.Pacman);
-  }
 
   void Update() {
 

@@ -1,26 +1,21 @@
 ﻿using UnityEngine;
-using UnityEngine.UI;
-using UnityEngine.SceneManagement;
 using System.Collections;
 
 public class LevelManager : MonoBehaviour {
 
 
-	public Button playButton;
-	public Button quitButton;
+  public string nextScene;
 
-	// Use this for initialization
-	void Start () {
-		playButton = playButton.GetComponent<Button>();
-		quitButton = quitButton.GetComponent<Button>();
-	}
 
-	public void playClicked() {
-		SceneManager.LoadScene("Scenes/Scene01");
-	}
+  protected bool levelComplete() {
+    // should evaluate eaten pellets == total pellets
+    return Input.GetKeyDown(KeyCode.A);
+  }
 
-	public void quitClicked() {
-		Application.Quit();
-	}
+
+  public void Update() {
+    if (levelComplete()) GameManager.Instance.transitionToScene(nextScene);
+  }
+
 
 }

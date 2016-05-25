@@ -7,14 +7,14 @@ public class GhostCharacter : Character {
 
 
 
-  Renderer bodyRenderer;
-  Material chaseMaterial;
-  Material frightenedMaterial;
+  private Renderer bodyRenderer;
+  private Material chaseMaterial;
+  private Material frightenedMaterial;
   private GhostAIState lastState;
 
 
 
-  public void Awake() {
+  public void Start() {
     GameObject ghostBody = transform.Find(Tags.GhostBody).gameObject;
     bodyRenderer = ghostBody.GetComponent<Renderer>();
     chaseMaterial = bodyRenderer.materials[0];
@@ -54,6 +54,7 @@ public class GhostCharacter : Character {
       lastState = GhostAIState.Dead;
     }
   }
+
 
 
 }

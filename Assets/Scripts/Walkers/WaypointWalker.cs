@@ -13,6 +13,20 @@ public abstract class WaypointWalker : MonoBehaviour {
 
 
   //----------------------------------------------------------------------------------------------------------
+  // game manager instance
+  //----------------------------------------------------------------------------------------------------------
+
+  protected GameManager gameManager;
+  protected Rigidbody walkerBody;
+
+  public void Awake() {
+    gameManager = GameManager.Instance;
+    walkerBody = GetComponent<Rigidbody>();
+  }
+
+
+
+  //----------------------------------------------------------------------------------------------------------
   // spawn node
   //----------------------------------------------------------------------------------------------------------
 
@@ -119,6 +133,8 @@ public abstract class WaypointWalker : MonoBehaviour {
   public abstract void update();
 
   void Update() {
+    if (gameManager.paused || !gameManager.inGame) return;
+
     updateInput();
     updateDirection();
     updateMove();
@@ -130,9 +146,10 @@ public abstract class WaypointWalker : MonoBehaviour {
   // apply movement
   //------------------------------------------------------------------------
 
-  void FixedUpdate() {
-    GetComponent<Rigidbody>().MovePosition(
-      GetComponent<Rigidbody>().position + transform.TransformDirection(moveAmount) * Time.fixedDeltaTime);
+  public void FixedUpdate() {
+    if (gameManager.paused || !gameManager.inGame) return;
+
+    walkerBody.MovePosition(walkerBody.position + transform.TransformDirection(moveAmount) * Time.fixedDeltaTime);
   }
 
 

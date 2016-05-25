@@ -26,4 +26,11 @@ public class Tags {
 
 
 
+  public static string MenuScene = "MenuScene";
+  public static string Scene1 = "Scene01";
+  public static string Scene2 = "Scene02";
+  public static string Scene3 = "Scene03";
+
+
+
 }

@@ -1,6 +1,6 @@
 ﻿using UnityEngine;
-using System.Collections;
 using UnityEngine.Events;
+using System.Collections;
 
 
 
@@ -11,14 +11,8 @@ public abstract class Powerup : MonoBehaviour {
     if (other.gameObject.tag == Tags.Pacman) {
       // execute effect
       startAction()();
-      StartCoroutine(callLater(endAction(), length()));
+      GameManager.Instance.callLater(endAction(), length());
     }
-  }
-
-
-  private IEnumerator callLater(UnityAction function, float seconds) {
-    yield return new WaitForSecondsRealtime(seconds);
-    function();
   }
 
 

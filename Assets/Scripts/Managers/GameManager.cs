@@ -1,7 +1,8 @@
 ﻿using UnityEngine;
-using System.Collections;
+using UnityEngine.Events;
 using UnityEngine.SceneManagement;
 using UnityEngine.UI;
+using System.Collections;
 
 
 
@@ -17,7 +18,7 @@ public class GameManager : MonoBehaviour {
     get {
       if (_instance == null) {
         GameObject obj = new GameObject("GameManager");
-        //DontDestroyOnLoad(obj);
+        DontDestroyOnLoad(obj);
         obj.AddComponent<GameManager>();
       }
       return _instance;
@@ -68,11 +69,40 @@ public class GameManager : MonoBehaviour {
 
 
   //-------------------------------------------------------------------
+  // conveniency methods to do stuff later
+  //-------------------------------------------------------------------
+
+  public void callLater(UnityAction function, float seconds) {
+    StartCoroutine(callLaterInternal(function, seconds));
+  }
+
+  public void callLaterRealtime(UnityAction function, float seconds) {
+    StartCoroutine(callLaterRealtimeInternal(function, seconds));
+  }
+
+  private IEnumerator callLaterInternal(UnityAction function, float seconds) {
+    yield return new WaitForSeconds(seconds);
+    function();
+  }
+
+  private IEnumerator callLaterRealtimeInternal(UnityAction function, float seconds) {
+    yield return new WaitForSecondsRealtime(seconds);
+    function();
+  }
+
+
+
+  //-------------------------------------------------------------------
   // 
   //-------------------------------------------------------------------
 
   public void Awake() {
+    SceneManager.activeSceneChanged += activeSceneChanged;
+
     _instance = this;
+    _paused = false;
+
+    inGame = true;
 
     startNewGame();
 
@@ -87,17 +117,64 @@ public class GameManager : MonoBehaviour {
 
   public void startNewGame() {
     _pacmanData = new PacmanData(false, 3, 0);  // should happen every new game
-
-    //loadScene("Scene01");
   }
 
 
+
   //-------------------------------------------------------------------
-  // 
+  // fade in/out between scenes
   //-------------------------------------------------------------------
 
-  public void loadScene(string sceneName) {
-    SceneManager.LoadScene(sceneName);
+  protected string currentScene;
+
+  public void transitionToScene(string sceneName) {
+    inGame = false;
+
+    GameObject obj = new GameObject();
+    obj.AddComponent<SceneFader>();
+    SceneFader fader = obj.GetComponent<SceneFader>();
+    fader.onFadeOut = delegate {
+      // load another scene
+      SceneManager.LoadScene(sceneName);
+      currentScene = sceneName;
+    };
+    fader.onFadeIn = delegate {
+      // do nothing?
+    };
+    fader.start = true;
+
   }
+
+  private void activeSceneChanged(Scene old, Scene justActivated) {
+    bool newInGame = currentScene != Tags.MenuScene;
+    if (newInGame) callLater(delegate {
+        // we can play as long as we aren't in the main menu
+        inGame = newInGame;
+      }, 2f);
+    else inGame = newInGame;
+  }
+
+  //-------------------------------------------------------------------
+  // can we play?
+  //-------------------------------------------------------------------
+
+  public bool inGame { get; protected set; }
+
+
+
+  //-------------------------------------------------------------------
+  // pause by setting timeScale
+  //-------------------------------------------------------------------
+
+  private bool _paused;
+  public bool paused {
+    get { return _paused; }
+    set {
+      _paused = value;
+      if (_paused) Time.timeScale = 0f;
+      else Time.timeScale = 1f;
+    }
+  }
+
 
 }
