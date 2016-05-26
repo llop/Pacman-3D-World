@@ -88,7 +88,7 @@ public class PlaneTopography : PlanetTopography {
 			col.Raycast (ray, out hit, 3.06f * delta);
 			Vector3 position = hit.point;
 			//print (position);
-			position += Vector3(0, 1, 0) * 0.5f;
+			position += (Vector3.up) * 0.5f;
 			positions.Add (position);
 		}
 	}
