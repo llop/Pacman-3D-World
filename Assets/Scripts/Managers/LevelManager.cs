@@ -1,4 +1,4 @@
-﻿using UnityEngine;
+﻿  using UnityEngine;
 using System.Collections;
 
 public class LevelManager : MonoBehaviour {
@@ -7,14 +7,23 @@ public class LevelManager : MonoBehaviour {
   public string nextScene;
 
 
+  GameManager gameManager;
+
+  public void Awake() {
+    gameManager = GameManager.Instance;
+  }
+
+
   protected bool levelComplete() {
-    // should evaluate eaten pellets == total pellets
+    //LevelData levelData = gameManager.levelData();
+    //return levelData.pelletsEaten == levelData.pelletsTotal;
+
     return Input.GetKeyDown(KeyCode.A);
   }
 
 
   public void Update() {
-    if (levelComplete()) GameManager.Instance.transitionToScene(nextScene);
+    if (levelComplete()) gameManager.transitionToScene(nextScene);
   }
 
 

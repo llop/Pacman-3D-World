@@ -30,8 +30,7 @@ public class Pellet : Powerup {
       // picked-up animation?
 
       // add points
-      PacmanData pacmanData = GameManager.Instance.pacmanData();
-      pacmanData.addScore(Score.Pellet);
+      GameManager.Instance.pacmanData.score += Score.Pellet;
 
     };
     _endAction = delegate {

@@ -13,17 +13,11 @@ public abstract class WaypointWalker : MonoBehaviour {
 
 
   //----------------------------------------------------------------------------------------------------------
-  // game manager instance
+  // game manager instance and the walkers rigidbody (aka. stiffbody)
   //----------------------------------------------------------------------------------------------------------
 
   protected GameManager gameManager;
   protected Rigidbody walkerBody;
-
-  public void Awake() {
-    gameManager = GameManager.Instance;
-    walkerBody = GetComponent<Rigidbody>();
-  }
-
 
 
   //----------------------------------------------------------------------------------------------------------
@@ -65,7 +59,7 @@ public abstract class WaypointWalker : MonoBehaviour {
   protected Direction currentDirection;
   protected Direction inputDirection;
 
-  public Direction getDirection() { return currentDirection; }
+  public Direction direction() { return currentDirection; }
 
 
   //----------------------------------------------------------------------------------------------------------
@@ -92,15 +86,33 @@ public abstract class WaypointWalker : MonoBehaviour {
 
 
   //------------------------------------------------------------------------
+  // awake callbacks
+  //------------------------------------------------------------------------
+
+  public void Awake() {
+    gameManager = GameManager.Instance;
+    walkerBody = GetComponent<Rigidbody>();
+
+    GameObject planet = GameObject.FindGameObjectWithTag(Tags.Planet);
+    graph = planet.GetComponent<WaypointGraph>();
+    topo = planet.GetComponent<PlanetTopography>();
+    awake();
+  }
+
+  public virtual void awake() {}
+
+
+  //------------------------------------------------------------------------
   // start callbacks
   //------------------------------------------------------------------------
 
   public virtual void startNavigation() {
-    GameObject planet = GameObject.FindGameObjectWithTag(Tags.Planet);
-    graph = planet.GetComponent<WaypointGraph>();
-    topo = planet.GetComponent<PlanetTopography>();
+    // set nodes
     currentNode = spawn;
     nextNode = currentNode;
+
+    // move to spawn
+    transform.position = spawn.transform.position;
   }
 
   public virtual void startDirection() {
@@ -108,14 +120,14 @@ public abstract class WaypointWalker : MonoBehaviour {
     inputDirection = Direction.None;
   }
 
-  public abstract void startState();
+  public virtual void startState() {}
 
   public virtual void start() {
     topo.updatePlane(currentNode.transform.position, nextNode.transform.position, ref nextNodePlane);
     topo.updateRotation(transform, nextNode.transform.position);
   }
 
-  void Start() {
+  public void Start() {
     startNavigation();
     startDirection();
     startState();
@@ -132,7 +144,7 @@ public abstract class WaypointWalker : MonoBehaviour {
   public abstract void updateMove();
   public abstract void update();
 
-  void Update() {
+  public void Update() {
     if (gameManager.paused || !gameManager.inGame) return;
 
     updateInput();

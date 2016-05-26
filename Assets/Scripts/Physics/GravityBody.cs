@@ -7,17 +7,22 @@ using System.Collections;
 public class GravityBody : MonoBehaviour {
 
 
+  private GravityAttractor attractor;
 
-  private GravityAttractor planet;
 
   void Awake() {
-    planet = GameObject.FindGameObjectWithTag(Tags.Planet).GetComponent<GravityAttractor>();
-    GetComponent<Rigidbody>().useGravity = false;
-    GetComponent<Rigidbody>().constraints = RigidbodyConstraints.FreezeRotation;
+    GameObject planet = GameObject.FindGameObjectWithTag(Tags.Planet);
+    attractor = planet.GetComponent<GravityAttractor>();
+
+    Rigidbody rigidBody = GetComponent<Rigidbody>();
+    rigidBody.useGravity = false;
+    rigidBody.constraints = RigidbodyConstraints.FreezeRotation;
   }
 
+
+  // on the fixed update, the boy suffered the devastating effects of gravity
   void FixedUpdate() {
-    planet.attract(transform);
+    attractor.attract(transform);
   }
 
 

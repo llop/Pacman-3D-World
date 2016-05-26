@@ -6,10 +6,12 @@ using System.Collections;
 public class Score : MonoBehaviour {
 
 
-  public static int Pellet = 10;
-  public static int PowerPellet = 20;
+  public static ulong Pellet = 10;
+  public static ulong PowerPellet = 20;
 
-  public static int Ghost = 100;
+  public static ulong Ghost = 100;
+
+  public static ulong GhostEatenMultiplierFactor = 2;
 
 
 }

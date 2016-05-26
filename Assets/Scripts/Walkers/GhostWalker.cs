@@ -9,21 +9,19 @@ public class GhostWalker : WaypointWalker {
 
 
   //----------------------------------------------------------------------------------------------------------
-  // default implementation for 'start' state initialization is provided here
+  // default implementation for 'awake' and 'start' state initialization is provided here
   // AI controls the ghost's state
   //----------------------------------------------------------------------------------------------------------
 
   protected GhostAI ai;
 
-  protected Collider ghostCollider;
-  protected Collider pacmanCollider;
-
+  public override void awake() {
+    gameManager.registerGhost(gameObject.name, gameObject);
+    ai = GetComponent<GhostAI>();
+  }
 
   public override void startState() {
-    ai = GetComponent<GhostAI>();
-
-    ghostCollider = GetComponent<Collider>();
-    pacmanCollider = GameObject.FindGameObjectWithTag(Tags.Pacman).GetComponent<Collider>();
+    ai.state = GhostAIState.Scatter;
   }
 
 
@@ -33,19 +31,11 @@ public class GhostWalker : WaypointWalker {
   //----------------------------------------------------------------------------------------------------------
 
   public void OnCollisionEnter(Collision collision) {
-    if (collision.gameObject.tag == Tags.Pacman) {
+    if (collision.gameObject.tag == Tags.Pacman && gameManager.pacmanData.alive) {
       if (ai.state != GhostAIState.Dead) {
-        if (ai.state == GhostAIState.Frightened) {
-          // kill ghost
-          ai.state = GhostAIState.Dead;
-          Physics.IgnoreCollision(ghostCollider, pacmanCollider, true);
-
-          // give points to pacman
-          gameManager.pacmanData().addScore(Score.Ghost);
-        } else {
-          // kill pacman
-
-        }
+        // who eats who depends on the ghost's state
+        if (ai.state == GhostAIState.Frightened) gameManager.killGhost(gameObject.name);
+        else gameManager.killPacman();
       }
     }
   }
@@ -112,10 +102,7 @@ public class GhostWalker : WaypointWalker {
     topo.updateRotation(transform, nextNode.transform.position);
 
     // bring back to life?
-    if (ai.state == GhostAIState.Dead && currentNode == spawn) {
-      ai.state = GhostAIState.Chase;
-      Physics.IgnoreCollision(ghostCollider, pacmanCollider, false);
-    }
+    if (ai.state == GhostAIState.Dead && currentNode == spawn) gameManager.reviveGhost(gameObject.name);
   }
 
 

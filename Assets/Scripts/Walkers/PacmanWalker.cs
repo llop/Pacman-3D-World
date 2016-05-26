@@ -22,6 +22,8 @@ public class PacmanWalker : WaypointWalker {
   protected bool inputJump; 
 
   public override void updateInput() {
+    if (!gameManager.pacmanData.alive) return;
+
     // read input
     if (Input.GetKeyDown(KeyCode.UpArrow)) inputDirection = Direction.Front;
     else if (Input.GetKeyDown(KeyCode.DownArrow)) inputDirection = Direction.Back;
@@ -49,6 +51,10 @@ public class PacmanWalker : WaypointWalker {
   public bool justLanded() { return isJustLanded; }
 
 
+  public override void awake() {
+    gameManager.registerPacman(gameObject);
+  }
+
   //----------------------------------------------------------------------------------------------------------
   // default implementation for 'start' state initialization is provided here
   //----------------------------------------------------------------------------------------------------------
@@ -67,6 +73,8 @@ public class PacmanWalker : WaypointWalker {
   //------------------------------------------------------------------------
 
   public override void updateDirection() {
+    if (!gameManager.pacmanData.alive) return;
+
     // turn if we are at the next node or past it
     // also turn if user reversed direction, or accept new direction when standing still
     if (currentDirection == Direction.None || currentDirection.isOpposite(inputDirection) || atNextNode()) 
@@ -90,7 +98,7 @@ public class PacmanWalker : WaypointWalker {
   //------------------------------------------------------------------------
 
   private void processMove() {
-    isMoving = currentDirection != Direction.None;
+    isMoving = gameManager.pacmanData.alive && currentDirection != Direction.None;
     Vector3 moveDir = isMoving ? Vector3.forward : Vector3.zero;
     moveAmount = moveDir * walkSpeed;
   }
@@ -177,6 +185,7 @@ public class PacmanWalker : WaypointWalker {
     else if (dir == Direction.Right) return currentNode.getRight() != null && currentNode.getRight().pacmanWalkable;
     return false;
   }
+
 
 
 }

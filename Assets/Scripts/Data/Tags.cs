@@ -20,9 +20,9 @@ public class Tags {
 
   public static string HUD = "HUD";
 
-  public static string Lives = "Lives";
-  public static string Score = "Score";
-  public static string Pellets = "Pellets";
+  public static string LivesText = "LivesText";
+  public static string ScoreText = "ScoreText";
+  public static string PelletsText = "PelletsText";
 
 
 
@@ -30,6 +30,13 @@ public class Tags {
   public static string Scene1 = "Scene01";
   public static string Scene2 = "Scene02";
   public static string Scene3 = "Scene03";
+
+
+
+  public static string Blinky = "Blinky";
+  public static string Pinky = "Pinky";
+  public static string Inky = "Inky";
+  public static string Clyde = "Clyde";
 
 
 

@@ -22,9 +22,9 @@ public class HUDManager : MonoBehaviour {
 
 
   public void Start() {
-    //livesText = transform.Find(Tags.Lives).gameObject.GetComponent<Text>();
-    //scoreText = transform.Find(Tags.Score).gameObject.GetComponent<Text>();
-    //pelletsText = transform.Find(Tags.Pellets).gameObject.GetComponent<Text>();
+    livesText = GameObject.FindGameObjectWithTag(Tags.LivesText).GetComponent<Text>();
+    scoreText = GameObject.FindGameObjectWithTag(Tags.ScoreText).GetComponent<Text>();
+    pelletsText = GameObject.FindGameObjectWithTag(Tags.PelletsText).GetComponent<Text>();
   }
 
 
@@ -37,9 +37,12 @@ public class HUDManager : MonoBehaviour {
       gameManager.paused = true;
     }
 
-    //livesText.text = "Lives " + gameManager.pacmanData().lives();
-    //scoreText.text = "Score " + gameManager.pacmanData().score();
-    //pelletsText.text = "Pellets " + 0;//gameManager.pacmanData().pellets();
+    // write data
+    PacmanData pacmanData = gameManager.pacmanData;
+    livesText.text = new string('c', pacmanData.lives);
+    scoreText.text = "" + pacmanData.score;
+    LevelData levelData = gameManager.levelData;
+    pelletsText.text = "" + levelData.pelletsEaten + '/' + levelData.pelletsTotal;
 	}
 
 

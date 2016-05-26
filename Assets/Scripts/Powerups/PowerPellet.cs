@@ -29,8 +29,7 @@ public class PowerPellet : Powerup {
       // picked-up animation?
 
       // add points
-      PacmanData pacmanData = GameManager.Instance.pacmanData();
-      pacmanData.addScore(Score.PowerPellet);
+      GameManager.Instance.pacmanData.score += Score.PowerPellet;
 
       // activate power mode?
       GameManager.Instance.powerPelletEffectStart();

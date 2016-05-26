@@ -3,6 +3,7 @@ using UnityEngine.Events;
 using UnityEngine.SceneManagement;
 using UnityEngine.UI;
 using System.Collections;
+using System.Collections.Generic;
 
 
 
@@ -12,6 +13,7 @@ public class GameManager : MonoBehaviour {
   //-------------------------------------------------------------------
   // game manager singleton
   //-------------------------------------------------------------------
+
   private static GameManager _instance;
 
   public static GameManager Instance { 
@@ -28,42 +30,51 @@ public class GameManager : MonoBehaviour {
 
 
   //-------------------------------------------------------------------
-  // 
+  // init everything here
   //-------------------------------------------------------------------
 
-  private PacmanData _pacmanData;
-  public PacmanData pacmanData() { return _pacmanData; }
+  public void Awake() {
+    _instance = this;
+    _paused = false;
+    _inGame = true; // false;
 
+    // register scene changed callback:
+    // when the scene is considered 'loaded', most of the shit in it isn't
+    // so we need to use the 'active' callback instead
+    SceneManager.activeSceneChanged += activeSceneChanged;
 
-  //-------------------------------------------------------------------
-  // 
-  //-------------------------------------------------------------------
-
-  private int _activePowerPellets;
-  public void powerPelletEffectStart() { 
-    ++_activePowerPellets;
-
-    if (_activePowerPellets == 1) {
-      // scaredy ghosts!
-      GameObject[] ghosts = GameObject.FindGameObjectsWithTag(Tags.Ghost);
-      foreach (GameObject ghostObject in ghosts) {
-        GhostAI ghost = ghostObject.GetComponent<GhostAI>();
-        if (ghost.state == GhostAIState.Chase || ghost.state == GhostAIState.Scatter) 
-          ghost.state = GhostAIState.Frightened;
-      }
-    }
+    resetPacmanData();        // 
+    resetLevelData();         // should happen on every level load
+    _activePowerPellets = 0;
   }
-  public void powerPelletEffectEnd() { 
-    --_activePowerPellets; 
 
-    if (_activePowerPellets == 0) {
-      // ghosts go back to patrol mode
-      GameObject[] ghosts = GameObject.FindGameObjectsWithTag(Tags.Ghost);
-      foreach (GameObject ghostObject in ghosts) {
-        GhostAI ghost = ghostObject.GetComponent<GhostAI>();
-        if (ghost.state == GhostAIState.Frightened) ghost.state = GhostAIState.Chase;
-      }
-    }
+
+
+  //-------------------------------------------------------------------
+  // stores the player's data
+  //-------------------------------------------------------------------
+
+  private PacmanData _pacmanData = new PacmanData();
+  public PacmanData pacmanData { get { return _pacmanData; } }
+
+  private void resetPacmanData() {
+    _pacmanData.alive = true;
+    _pacmanData.lives = 3;
+    _pacmanData.score = 0;
+  }
+
+
+
+  //-------------------------------------------------------------------
+  // stores the level's data
+  //-------------------------------------------------------------------
+
+  private LevelData _levelData = new LevelData();
+  public LevelData levelData { get { return _levelData; } }
+
+  private void resetLevelData() {
+    _levelData.pelletsEaten = 0;
+    _levelData.pelletsTotal = 0;
   }
 
 
@@ -93,72 +104,236 @@ public class GameManager : MonoBehaviour {
 
 
   //-------------------------------------------------------------------
-  // 
+  // pacman and ghosts game objects
   //-------------------------------------------------------------------
 
-  public void Awake() {
-    SceneManager.activeSceneChanged += activeSceneChanged;
+  private GameObject _pacmanGO;
+  private Dictionary<string, GameObject> _ghostsGOs = new Dictionary<string, GameObject>();
 
-    _instance = this;
-    _paused = false;
 
-    inGame = true;
+  public void registerPacman(GameObject obj) {
+    _pacmanGO = obj;
+  }
 
-    startNewGame();
+  public void registerGhost(string ghostName, GameObject obj) {
+    _ghostsGOs[ghostName] = obj;
+  }
 
-    _activePowerPellets = 0;                    // should happen on every level load
+
+  //-------------------------------------------------------------------
+  // activate/deactivate colliders
+  //-------------------------------------------------------------------
+
+  private void pacmanGhostsIgnoreCollision(bool ignore) {
+    Collider pacmanCollider = _pacmanGO.GetComponent<Collider>();
+    foreach (KeyValuePair<string, GameObject> ghostEntry in _ghostsGOs) 
+      Physics.IgnoreCollision(ghostEntry.Value.GetComponent<Collider>(), pacmanCollider, ignore);
+  }
+
+
+
+
+  //-------------------------------------------------------------------
+  // kill pacman
+  //-------------------------------------------------------------------
+
+  public void killPacman() {
+    if (_pacmanGO == null) return;
+
+    pacmanGhostsIgnoreCollision(true);
+
+    // needs to: play sfx
+    //           play pacman dead animation
+
+    if (!_pacmanData.alive) return;
+    _pacmanData.alive = false;
+    _pacmanData.lives -= 1;
+
+    if (_pacmanData.lives <= 0) {
+      // if pacman had zero lives,
+      //   if current score is a hi-score, 
+      //     ask user for initials to store his score
+      //     game over screen
+      //   else just go to game over screen
+
+      transitionToScene(Tags.MenuScene);
+
+    } else {
+      fadeInAndOut(
+        delegate {
+          // on fade out complete, halt walkers 
+          _inGame = false;
+
+          // send everyone to their spawns (do a hard reset by calling the start method)
+          foreach (KeyValuePair<string, GameObject> ghostEntry in _ghostsGOs) 
+            ghostEntry.Value.GetComponent<WaypointWalker>().Start();
+          _pacmanGO.GetComponent<WaypointWalker>().Start();
+
+          // bring pacman back to life
+          revivePacman();
+        },
+        delegate {
+          // ok, do your thang
+          _pacmanData.alive = true;
+          _inGame = true;
+        });
+      
+    }
+  }
+
+  public void revivePacman() {
+    if (_pacmanGO == null) return;
+    pacmanGhostsIgnoreCollision(false);
+  }
+
+
+  //-------------------------------------------------------------------
+  // kill a ghost
+  //-------------------------------------------------------------------
+
+  private ulong _ghostScoreMultiplier;
+
+  public void killGhost(string ghostName) {
+    GameObject ghostGO = _ghostsGOs[ghostName];
+    if (ghostGO == null) return;
+
+    // kill ghost
+    GhostAI ai = ghostGO.GetComponent<GhostAI>();
+    ai.state = GhostAIState.Dead;
+
+    // deactivate collisions
+    Collider ghostCollider = ghostGO.GetComponent<Collider>();
+    Collider pacmanCollider = _pacmanGO.GetComponent<Collider>();
+    Physics.IgnoreCollision(ghostCollider, pacmanCollider, true);
+
+    // give points to pacman
+    _pacmanData.score += Score.Ghost * _ghostScoreMultiplier;
+    _ghostScoreMultiplier *= Score.GhostEatenMultiplierFactor;
+  }
+
+  public void reviveGhost(string ghostName) {
+    GameObject ghostGO = _ghostsGOs[ghostName];
+    if (ghostGO == null) return;
+
+    // reactivate collisions
+    Collider ghostCollider = ghostGO.GetComponent<Collider>();
+    Collider pacmanCollider = _pacmanGO.GetComponent<Collider>();
+    Physics.IgnoreCollision(ghostCollider, pacmanCollider, false);
+
+    // reset AI state? 
+    ghostGO.GetComponent<GhostAI>().state = GhostAIState.Scatter;
   }
 
 
 
   //-------------------------------------------------------------------
-  // 
+  // power pellet mode activation/deactivation
   //-------------------------------------------------------------------
 
-  public void startNewGame() {
-    _pacmanData = new PacmanData(false, 3, 0);  // should happen every new game
+  public void startGame() {
+    resetPacmanData();        // 
+    resetLevelData();         // should happen on every level load
+    _activePowerPellets = 0;
+    transitionToScene(Tags.Scene1);
   }
 
+
+  //-------------------------------------------------------------------
+  // power pellet mode activation/deactivation
+  //-------------------------------------------------------------------
+
+  private int _activePowerPellets;
+  public void powerPelletEffectStart() { 
+    ++_activePowerPellets;
+
+    if (_activePowerPellets == 1) {
+      
+      // init score multiplier
+      _ghostScoreMultiplier = 1;
+
+      // scaredy ghosts!
+      foreach (KeyValuePair<string, GameObject> ghostEntry in _ghostsGOs) {
+        GhostAI ai = ghostEntry.Value.GetComponent<GhostAI>();
+        if (ai.state == GhostAIState.Chase || ai.state == GhostAIState.Scatter) 
+          ai.state = GhostAIState.Frightened;
+      }
+    }
+  }
+
+  public void powerPelletEffectEnd() { 
+    --_activePowerPellets; 
+
+    if (_activePowerPellets == 0) {
+      // reset score multiplier
+      _ghostScoreMultiplier = 1;
+
+      // ghosts go back to patrol mode
+      foreach (KeyValuePair<string, GameObject> ghostEntry in _ghostsGOs) {
+        GhostAI ai = ghostEntry.Value.GetComponent<GhostAI>();
+        if (ai.state == GhostAIState.Frightened) ai.state = GhostAIState.Chase;
+      }
+    }
+  }
+
+
+
+  //-------------------------------------------------------------------
+  // fade in-out conveniency method
+  //-------------------------------------------------------------------
+
+  private void fadeInAndOut(UnityAction onFadeOut, UnityAction onFadeIn) {
+    GameObject obj = new GameObject();
+    obj.AddComponent<Fader>();
+    Fader fader = obj.GetComponent<Fader>();
+    fader.onFadeOut = onFadeOut;
+    fader.onFadeIn = onFadeIn;
+    fader.start = true;
+  }
 
 
   //-------------------------------------------------------------------
   // fade in/out between scenes
   //-------------------------------------------------------------------
 
-  protected string currentScene;
+  private string _currentScene;
+  public string currentScene { get { return _currentScene; } }
 
   public void transitionToScene(string sceneName) {
-    inGame = false;
+    _inGame = false;
 
-    GameObject obj = new GameObject();
-    obj.AddComponent<SceneFader>();
-    SceneFader fader = obj.GetComponent<SceneFader>();
-    fader.onFadeOut = delegate {
-      // load another scene
-      SceneManager.LoadScene(sceneName);
-      currentScene = sceneName;
-    };
-    fader.onFadeIn = delegate {
-      // do nothing?
-    };
-    fader.start = true;
+    fadeInAndOut(
+      delegate {
 
+        // reset leveldata
+        resetLevelData();
+        // load another scene
+        _currentScene = sceneName;
+        SceneManager.LoadScene(_currentScene);
+
+      }, 
+      delegate {
+
+      });
   }
 
+  // we need to manually set a timeout for characters to start moving in the scene
   private void activeSceneChanged(Scene old, Scene justActivated) {
-    bool newInGame = currentScene != Tags.MenuScene;
+    bool newInGame = _currentScene != Tags.MenuScene;
     if (newInGame) callLater(delegate {
         // we can play as long as we aren't in the main menu
-        inGame = newInGame;
+        _inGame = newInGame;
       }, 2f);
-    else inGame = newInGame;
+    else _inGame = newInGame;
   }
+
+
 
   //-------------------------------------------------------------------
   // can we play?
   //-------------------------------------------------------------------
 
-  public bool inGame { get; protected set; }
+  private bool _inGame;
+  public bool inGame { get { return _inGame; } }
 
 
 
@@ -175,6 +350,7 @@ public class GameManager : MonoBehaviour {
       else Time.timeScale = 1f;
     }
   }
+
 
 
 }

@@ -34,7 +34,7 @@ public class Inky : GhostAI {
     float numTiles = 2f;
     Transform pacmanTransform = pacman.transform;
     Vector3 pacmanTarget = pacmanTransform.position;
-    Direction pacmanDirection = pacmanWalker.getDirection();
+    Direction pacmanDirection = pacmanWalker.direction();
     if (pacmanDirection == Direction.Front) {
       pacmanTarget += pacmanTransform.forward.normalized * numTiles;
       pacmanTarget -= pacmanTransform.right.normalized * numTiles;

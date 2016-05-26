@@ -123,7 +123,7 @@ public abstract class GhostAI : MonoBehaviour {
     // force direction change is the easy one
     if (forceReverse) {
       forceReverse = false;
-      return walker.getDirection().getOpposite();
+      return walker.direction().getOpposite();
     }
 
     // otherwise let the state determine where to go
@@ -148,7 +148,7 @@ public abstract class GhostAI : MonoBehaviour {
     // if two or more potential choices are an equal distance from the target, 
     // the decision between them is made in the order of up > left > down (> right)
     List<Direction> directions = new List<Direction>();
-    Direction direction = walker.getDirection();
+    Direction direction = walker.direction();
     WaypointNode node = walker.getCurrentNode();
     if (node.getFront() != null && !direction.isOpposite(Direction.Front)) directions.Add(Direction.Front);
     if (node.getLeft() != null && !direction.isOpposite(Direction.Left)) directions.Add(Direction.Left);

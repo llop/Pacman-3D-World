@@ -25,7 +25,7 @@ public class MenuManager : MonoBehaviour {
   }
 
   public void play() {
-    GameManager.Instance.transitionToScene(Tags.Scene1);
+    GameManager.Instance.startGame();
   }
 
 
