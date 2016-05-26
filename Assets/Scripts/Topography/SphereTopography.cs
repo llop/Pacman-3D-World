@@ -1,5 +1,6 @@
 ﻿using UnityEngine;
 using System.Collections;
+using System.Collections.Generic;
 
 
 
@@ -81,6 +82,28 @@ public class SphereTopography : PlanetTopography {
     vCoordB = Vector3.Dot(dB, planeUp);
   }
 
+	public override void getPelletPositions (WaypointNode one, WaypointNode two, out List<Vector3> positions) {
+		positions = new List<Vector3> ();
+		int distance = (int)calculateDistance (one.transform.position, two.transform.position);
+		Vector3 direction1 = (one.transform.position - transform.position).normalized;
+		Vector3 direction2 = (two.transform.position - transform.position).normalized;
 
+		MeshCollider col = GetComponent<MeshCollider> ();
+
+		for (int i = 0; i <= distance; i++) {
+			float ratio = (float)i/(float)distance;
+			Vector3 direction = Vector3.Slerp (direction1, direction2, ratio);
+			Ray ray = new Ray(transform.position, direction);
+			// reverse ray
+			ray.origin = ray.GetPoint (2 * planetRadius);
+			ray.direction = -direction;
+			RaycastHit hit;
+			col.Raycast (ray, out hit, 2 * planetRadius);
+			Vector3 position = hit.point;
+			print (position);
+			position += direction * 0.5f;
+			positions.Add (position);
+		}
+	}
 
 }

@@ -1,0 +1,16 @@
+fileFormatVersion: 2
+guid: 3038c07ceaf5648acb31d30d86edc3b2
+timeCreated: 1464287005
+licenseType: Free
+MonoImporter:
+  serializedVersion: 2
+  defaultReferences:
+  - graph: {instanceID: 0}
+  - topography: {instanceID: 0}
+  - pellet: {fileID: 121576, guid: cf7c15b27de7a498eb32f31290c3ffc6, type: 2}
+  - powerPellet: {fileID: 171452, guid: b4cd9d75219c54f068fa44f31d56f8ca, type: 2}
+  executionOrder: 0
+  icon: {instanceID: 0}
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 

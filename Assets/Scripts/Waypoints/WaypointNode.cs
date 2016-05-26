@@ -7,6 +7,7 @@ public class WaypointNode : MonoBehaviour {
 
 
   public bool pacmanWalkable = true;
+	public bool powerPellet = false;
 
 
   private WaypointNode front;
@@ -35,7 +36,7 @@ public class WaypointNode : MonoBehaviour {
 
 
   public void Awake() {
-    //GetComponent<Renderer>().enabled = false;
+    GetComponent<Renderer>().enabled = false;
   }
 
 

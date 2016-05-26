@@ -31,6 +31,7 @@ public class Pellet : Powerup {
 
       // add points
       GameManager.Instance.pacmanData.score += Score.Pellet;
+	  GameManager.Instance.levelData.pelletsEaten += 1;
 
     };
     _endAction = delegate {

@@ -1,5 +1,6 @@
 ﻿using UnityEngine;
 using System.Collections;
+using System.Collections.Generic;
 
 public class PlaneTopography : PlanetTopography {
 
@@ -58,5 +59,37 @@ public class PlaneTopography : PlanetTopography {
   }
 
 
+	public override void getPelletPositions (WaypointNode one, WaypointNode two, out List<Vector3> positions) {
+		positions = new List<Vector3> ();
 
+		MeshCollider col = GetComponent<MeshCollider> ();
+
+		float delta = Mathf.Max (col.bounds.max.x, col.bounds.max.z);
+		Vector3 center = transform.position;
+		center.y += 2 * delta;
+
+		int distance = (int)calculateDistance (one.transform.position, two.transform.position);
+		Vector3 direction1 = (one.transform.position - center).normalized;
+		Vector3 direction2 = (two.transform.position - center).normalized;
+
+
+		for (int i = 0; i <= distance; i++) {
+			float ratio = (float)i/(float)distance;
+			Vector3 direction = Vector3.Slerp (direction1, direction2, ratio);
+			Ray ray = new Ray(center, direction);
+			RaycastHit hit;
+			// l = sqrt(4.25) = sqrt(0.5^2 + 2^2) = 2.06
+			//     /|\  
+			// l->/ | \  h = 2
+			//   /  |  \ 
+			//   -------
+			//    b = 1
+
+			col.Raycast (ray, out hit, 3.06f * delta);
+			Vector3 position = hit.point;
+			//print (position);
+			position += Vector3(0, 1, 0) * 0.5f;
+			positions.Add (position);
+		}
+	}
 }
