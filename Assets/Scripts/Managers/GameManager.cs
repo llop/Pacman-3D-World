@@ -174,7 +174,6 @@ public class GameManager : MonoBehaviour {
         },
         delegate {
           // ok, do your thang
-          _pacmanData.alive = true;
           _inGame = true;
         });
       
@@ -182,6 +181,7 @@ public class GameManager : MonoBehaviour {
   }
 
   public void revivePacman() {
+    _pacmanData.alive = true;
     if (_pacmanGO == null) return;
     pacmanGhostsIgnoreCollision(false);
   }

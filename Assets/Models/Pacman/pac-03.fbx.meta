@@ -137,7 +137,7 @@ ModelImporter:
     400128: TopRight.018_end
     4300000: Mesh_0102.001
     4300002: Mesh_0102
-    7400000: Armature|ArmatureAction
+    7400000: Die
     7400002: Run
     7400004: Idle
     7400006: Idle
@@ -646,6 +646,162 @@ ModelImporter:
       takeName: Armature|ArmatureAction
       firstFrame: 88
       lastFrame: 95
+      wrapMode: 0
+      orientationOffsetY: 0
+      level: 0
+      cycleOffset: 0
+      loop: 0
+      hasAdditiveReferencePose: 0
+      loopTime: 0
+      loopBlend: 0
+      loopBlendOrientation: 0
+      loopBlendPositionY: 0
+      loopBlendPositionXZ: 0
+      keepOriginalOrientation: 0
+      keepOriginalPositionY: 1
+      keepOriginalPositionXZ: 0
+      heightFromFeet: 0
+      mirror: 0
+      bodyMask: 01000000010000000100000001000000010000000100000001000000010000000100000001000000010000000100000001000000
+      curves: []
+      events: []
+      transformMask:
+      - path: 
+        weight: 1
+      - path: Armature
+        weight: 1
+      - path: Armature/Spine
+        weight: 1
+      - path: Armature/Spine/Spine.001
+        weight: 1
+      - path: Armature/Spine/Spine.001/Spine.003
+        weight: 1
+      - path: Armature/Spine/Spine.001/Spine.003/Spine.005
+        weight: 1
+      - path: Armature/Spine/Spine.001/Spine.003/Spine.005/Spine.007
+        weight: 1
+      - path: Armature/Spine/Spine.001/Spine.003/Spine.005/Spine.007/Spine.007_end
+        weight: 1
+      - path: Armature/Spine/Spine.002
+        weight: 1
+      - path: Armature/Spine/Spine.002/Spine.004
+        weight: 1
+      - path: Armature/Spine/Spine.002/Spine.004/Spine.006
+        weight: 1
+      - path: Armature/Spine/Spine.002/Spine.004/Spine.006/Spine.008
+        weight: 1
+      - path: Armature/Spine/Spine.002/Spine.004/Spine.006/Spine.008/Spine.008_end
+        weight: 1
+      - path: Armature/Spine/TopLeft
+        weight: 1
+      - path: Armature/Spine/TopLeft/LeftArmTop
+        weight: 1
+      - path: Armature/Spine/TopLeft/LeftArmTop/LeftArmBottom
+        weight: 1
+      - path: Armature/Spine/TopLeft/LeftArmTop/LeftArmBottom/LeftWrist
+        weight: 1
+      - path: Armature/Spine/TopLeft/LeftArmTop/LeftArmBottom/LeftWrist/LeftWrist.001
+        weight: 1
+      - path: Armature/Spine/TopLeft/LeftArmTop/LeftArmBottom/LeftWrist/LeftWrist.001/LeftWrist.005
+        weight: 1
+      - path: Armature/Spine/TopLeft/LeftArmTop/LeftArmBottom/LeftWrist/LeftWrist.001/LeftWrist.005/LeftWrist.006
+        weight: 1
+      - path: Armature/Spine/TopLeft/LeftArmTop/LeftArmBottom/LeftWrist/LeftWrist.001/LeftWrist.005/LeftWrist.006/LeftWrist.006_end
+        weight: 1
+      - path: Armature/Spine/TopLeft/LeftArmTop/LeftArmBottom/LeftWrist/LeftWrist.002
+        weight: 1
+      - path: Armature/Spine/TopLeft/LeftArmTop/LeftArmBottom/LeftWrist/LeftWrist.002/LeftWrist.007
+        weight: 1
+      - path: Armature/Spine/TopLeft/LeftArmTop/LeftArmBottom/LeftWrist/LeftWrist.002/LeftWrist.007/LeftWrist.008
+        weight: 1
+      - path: Armature/Spine/TopLeft/LeftArmTop/LeftArmBottom/LeftWrist/LeftWrist.002/LeftWrist.007/LeftWrist.008/LeftWrist.008_end
+        weight: 1
+      - path: Armature/Spine/TopLeft/LeftArmTop/LeftArmBottom/LeftWrist/LeftWrist.003
+        weight: 1
+      - path: Armature/Spine/TopLeft/LeftArmTop/LeftArmBottom/LeftWrist/LeftWrist.003/LeftWrist.009
+        weight: 1
+      - path: Armature/Spine/TopLeft/LeftArmTop/LeftArmBottom/LeftWrist/LeftWrist.003/LeftWrist.009/LeftWrist.010
+        weight: 1
+      - path: Armature/Spine/TopLeft/LeftArmTop/LeftArmBottom/LeftWrist/LeftWrist.003/LeftWrist.009/LeftWrist.010/LeftWrist.010_end
+        weight: 1
+      - path: Armature/Spine/TopLeft/LeftArmTop/LeftArmBottom/LeftWrist/LeftWrist.004
+        weight: 1
+      - path: Armature/Spine/TopLeft/LeftArmTop/LeftArmBottom/LeftWrist/LeftWrist.004/LeftWrist.011
+        weight: 1
+      - path: Armature/Spine/TopLeft/LeftArmTop/LeftArmBottom/LeftWrist/LeftWrist.004/LeftWrist.011/LeftWrist.012
+        weight: 1
+      - path: Armature/Spine/TopLeft/LeftArmTop/LeftArmBottom/LeftWrist/LeftWrist.004/LeftWrist.011/LeftWrist.012/LeftWrist.012_end
+        weight: 1
+      - path: Armature/Spine/TopLeft/LeftArmTop/LeftArmBottom/LeftWrist/TopLeft.004
+        weight: 1
+      - path: Armature/Spine/TopLeft/LeftArmTop/LeftArmBottom/LeftWrist/TopLeft.004/TopLeft.005
+        weight: 1
+      - path: Armature/Spine/TopLeft/LeftArmTop/LeftArmBottom/LeftWrist/TopLeft.004/TopLeft.005/TopLeft.006
+        weight: 1
+      - path: Armature/Spine/TopLeft/LeftArmTop/LeftArmBottom/LeftWrist/TopLeft.004/TopLeft.005/TopLeft.006/TopLeft.006_end
+        weight: 1
+      - path: Armature/Spine/TopRight
+        weight: 1
+      - path: Armature/Spine/TopRight/TopRight.001
+        weight: 1
+      - path: Armature/Spine/TopRight/TopRight.001/TopRight.002
+        weight: 1
+      - path: Armature/Spine/TopRight/TopRight.001/TopRight.002/TopRight.003
+        weight: 1
+      - path: Armature/Spine/TopRight/TopRight.001/TopRight.002/TopRight.003/TopRight.004
+        weight: 1
+      - path: Armature/Spine/TopRight/TopRight.001/TopRight.002/TopRight.003/TopRight.004/TopRight.017
+        weight: 1
+      - path: Armature/Spine/TopRight/TopRight.001/TopRight.002/TopRight.003/TopRight.004/TopRight.017/TopRight.018
+        weight: 1
+      - path: Armature/Spine/TopRight/TopRight.001/TopRight.002/TopRight.003/TopRight.004/TopRight.017/TopRight.018/TopRight.018_end
+        weight: 1
+      - path: Armature/Spine/TopRight/TopRight.001/TopRight.002/TopRight.003/TopRight.005
+        weight: 1
+      - path: Armature/Spine/TopRight/TopRight.001/TopRight.002/TopRight.003/TopRight.005/TopRight.009
+        weight: 1
+      - path: Armature/Spine/TopRight/TopRight.001/TopRight.002/TopRight.003/TopRight.005/TopRight.009/TopRight.010
+        weight: 1
+      - path: Armature/Spine/TopRight/TopRight.001/TopRight.002/TopRight.003/TopRight.005/TopRight.009/TopRight.010/TopRight.010_end
+        weight: 1
+      - path: Armature/Spine/TopRight/TopRight.001/TopRight.002/TopRight.003/TopRight.006
+        weight: 1
+      - path: Armature/Spine/TopRight/TopRight.001/TopRight.002/TopRight.003/TopRight.006/TopRight.011
+        weight: 1
+      - path: Armature/Spine/TopRight/TopRight.001/TopRight.002/TopRight.003/TopRight.006/TopRight.011/TopRight.012
+        weight: 1
+      - path: Armature/Spine/TopRight/TopRight.001/TopRight.002/TopRight.003/TopRight.006/TopRight.011/TopRight.012/TopRight.012_end
+        weight: 1
+      - path: Armature/Spine/TopRight/TopRight.001/TopRight.002/TopRight.003/TopRight.007
+        weight: 1
+      - path: Armature/Spine/TopRight/TopRight.001/TopRight.002/TopRight.003/TopRight.007/TopRight.013
+        weight: 1
+      - path: Armature/Spine/TopRight/TopRight.001/TopRight.002/TopRight.003/TopRight.007/TopRight.013/TopRight.014
+        weight: 1
+      - path: Armature/Spine/TopRight/TopRight.001/TopRight.002/TopRight.003/TopRight.007/TopRight.013/TopRight.014/TopRight.014_end
+        weight: 1
+      - path: Armature/Spine/TopRight/TopRight.001/TopRight.002/TopRight.003/TopRight.008
+        weight: 1
+      - path: Armature/Spine/TopRight/TopRight.001/TopRight.002/TopRight.003/TopRight.008/TopRight.015
+        weight: 1
+      - path: Armature/Spine/TopRight/TopRight.001/TopRight.002/TopRight.003/TopRight.008/TopRight.015/TopRight.016
+        weight: 1
+      - path: Armature/Spine/TopRight/TopRight.001/TopRight.002/TopRight.003/TopRight.008/TopRight.015/TopRight.016/TopRight.016_end
+        weight: 1
+      - path: Camera
+        weight: 1
+      - path: Lamp
+        weight: 1
+      - path: Mesh_0102
+        weight: 1
+      maskType: 0
+      maskSource: {instanceID: 0}
+      additiveReferencePoseFrame: 0
+    - serializedVersion: 16
+      name: Die
+      takeName: Armature|ArmatureAction
+      firstFrame: 110
+      lastFrame: 123
       wrapMode: 0
       orientationOffsetY: 0
       level: 0

@@ -25,7 +25,7 @@ public abstract class Character : MonoBehaviour {
   protected abstract void setAnimationState();
 
 	public void Update() {
-    if (!gameManager.inGame) return;
+    //if (!gameManager.inGame) return;
     setAnimationState();
 	}
 
