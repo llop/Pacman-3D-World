@@ -79,6 +79,8 @@ public class PacmanWalker : WaypointWalker {
     // also turn if user reversed direction, or accept new direction when standing still
     if (currentDirection == Direction.None || currentDirection.isOpposite(inputDirection) || atNextNode()) 
       processDirection();
+
+	topo.updateRotation (transform, nextNode.transform.position);
   }
 
   public override void updateMove() {
