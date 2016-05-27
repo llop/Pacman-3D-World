@@ -95,9 +95,6 @@ public class PacmanWalker : WaypointWalker {
     // also turn if user reversed direction, or accept new direction when standing still
     if (currentDirection == Direction.None || currentDirection.isOpposite(inputDirection) || atNextNode()) 
       processDirection();
-
-    if (gameManager.pacmanData.alive && currentDirection != Direction.None)
-	    topo.updateRotation (transform, nextNode.transform.position);
   }
 
   public override void updateMove() {
@@ -107,6 +104,8 @@ public class PacmanWalker : WaypointWalker {
   }
 
   public override void update() {
+    // next node plane normal
+    Debug.DrawLine(nextNode.transform.position, nextNode.transform.position + nextNodePlane.normal.normalized * 4, Color.blue);
     // where's pacman facing?
     Debug.DrawLine(transform.position, transform.position + transform.forward.normalized * 4, Color.red);
   }

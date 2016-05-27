@@ -17,18 +17,12 @@ public class PillTopography : PlanetTopography {
   //------------------------------------------------------------------------
 
   public override void updatePlane(Vector3 origin, Vector3 target, ref Plane plane) {
-    Vector3 dVec = target.normalized;
-    Vector3 xPoint = Vector3.Dot(origin, dVec) * dVec;
-    plane.SetNormalAndPosition(origin - xPoint, xPoint);
-
-    //Vector3 center = new Vector3(0f, target.y, 0f);
-    //Vector3 vecA = target - center;
-    //Vector3 vecB = origin - center;
-    //float angle = Vector3.Angle(vecA, vecB);
-    //float length = vecA.magnitude / Mathf.Cos(angle * Mathf.Deg2Rad);
-    //Vector3 xPoint = vecB.normalized * length;
-    //plane.SetNormalAndPosition(xPoint - target, target);
-
+    Vector3 center = new Vector3(0f, target.y, 0f);
+    Vector3 vecA = target - center;
+    Vector3 vecB = origin - center;
+    Vector3 rVec = Vector3.Cross(vecA, vecB);
+    Vector3 uVec = Vector3.Cross(center - target, rVec);
+    plane.SetNormalAndPosition(uVec.normalized, target);
   }
 
 
@@ -38,20 +32,8 @@ public class PillTopography : PlanetTopography {
   //------------------------------------------------------------------------
 
   public override void updateRotation(Transform body, Vector3 target) {
-
-    // face the next node
-    Vector3 center = new Vector3(0f, body.position.y, 0f);
-    Vector3 vecA = body.position - center;
-    Vector3 vecB = target - center;
-    float angle = Vector3.Angle(vecA, vecB);
-    float length = vecA.magnitude / Mathf.Cos(angle * Mathf.Deg2Rad);
-    Vector3 xPoint = vecB.normalized * length;
-    body.LookAt(target);
-
-    // correct up vector
-    Vector3 targetDir = vecA.normalized;
-    body.rotation = Quaternion.FromToRotation(body.up, targetDir) * body.rotation;
-
+    Vector3 bodyUp = new Vector3(body.position.x, 0f, body.position.z);
+    body.rotation = Quaternion.LookRotation(target - body.position, bodyUp.normalized);
   }
 
 
@@ -100,7 +82,7 @@ public class PillTopography : PlanetTopography {
 			RaycastHit hit;
 			col.Raycast (ray, out hit, 2 * planetRadius);
 			Vector3 position = hit.point;
-			print (position);
+			//print (position);
 			position += hit.normal * 0.5f;
 			positions.Add (position);
 		}

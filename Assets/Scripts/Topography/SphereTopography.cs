@@ -46,13 +46,19 @@ public class SphereTopography : PlanetTopography {
 
   public override void updateRotation(Transform body, Vector3 target) {
     // face the next node
+    //Vector3 currentNodePos = body.position;
+    //float angle = Vector3.Angle(currentNodePos, target);
+    //float length = currentNodePos.magnitude / Mathf.Cos(angle * Mathf.Deg2Rad);
+    //body.LookAt(target.normalized * length);
+    // correct up vector
+    //Vector3 targetDir = body.position.normalized;
+    //body.rotation = Quaternion.FromToRotation(body.up, targetDir) * body.rotation;
+
     Vector3 currentNodePos = body.position;
     float angle = Vector3.Angle(currentNodePos, target);
     float length = currentNodePos.magnitude / Mathf.Cos(angle * Mathf.Deg2Rad);
-    body.LookAt(target.normalized * length);
-    // correct up vector
-    Vector3 targetDir = body.position.normalized;
-    body.rotation = Quaternion.FromToRotation(body.up, targetDir) * body.rotation;
+    Vector3 realTarget = target.normalized * length;
+    body.rotation = Quaternion.LookRotation(realTarget - currentNodePos, currentNodePos.normalized);
   }
 
 
