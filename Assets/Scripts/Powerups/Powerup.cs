@@ -7,18 +7,12 @@ using System.Collections;
 public abstract class Powerup : MonoBehaviour {
 
 
+  public UnityAction action;  // to be called when the powerup is picked up
+
+
   public void OnTriggerEnter(Collider other) {
-    if (other.gameObject.tag == Tags.Pacman) {
-      // execute effect
-      startAction()();
-      GameManager.Instance.callLater(endAction(), length());
-    }
+    if (other.gameObject.tag == Tags.Pacman) action();  // execute effect
   }
-
-
-  public abstract float length();             // duration of the effect, in seconds
-  public abstract UnityAction startAction();  // to be called when the powerup is picked up
-  public abstract UnityAction endAction();    // to be called length seconds after the powerup is picked up
 
 
 }

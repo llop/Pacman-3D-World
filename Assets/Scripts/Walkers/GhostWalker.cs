@@ -21,7 +21,7 @@ public class GhostWalker : WaypointWalker {
   }
 
   public override void startState() {
-    ai.state = GhostAIState.Scatter;
+    ai.resetMode();
   }
 
 
@@ -74,7 +74,8 @@ public class GhostWalker : WaypointWalker {
 
   public override void updateMove() {
     // ghost moves forward
-    moveAmount = Vector3.forward * walkSpeed;
+    float speedMultiplier = walkSpeed * gameManager.ghostSpeedMultiplier(ai.state);
+    moveAmount = Vector3.forward * speedMultiplier;
   }
 
   public override void update() {

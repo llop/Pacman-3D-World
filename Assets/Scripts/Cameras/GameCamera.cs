@@ -12,7 +12,7 @@ public class GameCamera : MonoBehaviour {
 
 
 
-  public void Start() {
+  public void Awake() {
     pacman = GameObject.FindGameObjectWithTag(Tags.Pacman);
 
     canvas = Instantiate(Resources.Load("Prefabs/GameCanvas")) as Canvas;

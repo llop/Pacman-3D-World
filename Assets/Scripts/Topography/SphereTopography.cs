@@ -100,7 +100,7 @@ public class SphereTopography : PlanetTopography {
 			RaycastHit hit;
 			col.Raycast (ray, out hit, 2 * planetRadius);
 			Vector3 position = hit.point;
-			print (position);
+			//print (position);
 			position += direction * 0.5f;
 			positions.Add (position);
 		}

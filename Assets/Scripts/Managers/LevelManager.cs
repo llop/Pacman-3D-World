@@ -1,28 +1,63 @@
-﻿  using UnityEngine;
+﻿using UnityEngine;
 using System.Collections;
 
+
+
+// every playable level must have one of these
+// handles when to move on to the next scene
+// and interaction with the HUD
 public class LevelManager : MonoBehaviour {
 
 
   public string nextScene;
 
 
-  GameManager gameManager;
+  private GameManager gameManager;
+  private HUDManager hudManager;
 
-  public void Awake() {
+
+  public void Start() {
     gameManager = GameManager.Instance;
+    gameManager.registerPlayableLevel(this);
+    hudManager = GameObject.FindGameObjectWithTag(Tags.HUD).GetComponent<HUDManager>();
+  }
+
+
+
+  public bool playing = false;
+
+  private void checkForStart() {
+    if (playing || gameManager.paused) return;
+
+    if (Input.GetKeyDown(KeyCode.UpArrow)
+        || Input.GetKeyDown(KeyCode.DownArrow)
+        || Input.GetKeyDown(KeyCode.LeftArrow)
+        || Input.GetKeyDown(KeyCode.RightArrow)
+        || Input.GetKeyDown(KeyCode.X)) {
+      hudManager.showReady(false);
+      playing = true;
+      gameManager.inGame = true;
+    };
+  }
+
+
+  public void waitForInput() {
+    playing = false;
+    hudManager.showReady(true);
   }
 
 
   protected bool levelComplete() {
-    //LevelData levelData = gameManager.levelData();
-    //return levelData.pelletsEaten == levelData.pelletsTotal;
+    // skip to next level by pressing 'A'
+    if (Input.GetKeyDown(KeyCode.A)) return true;
 
-    return Input.GetKeyDown(KeyCode.A);
+    LevelData levelData = gameManager.levelData;
+    return levelData.pelletsEaten == levelData.pelletsTotal;
   }
 
 
   public void Update() {
+    checkForStart();
     if (levelComplete()) gameManager.transitionToScene(nextScene);
   }
 

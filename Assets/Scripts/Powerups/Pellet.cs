@@ -5,37 +5,20 @@ using UnityEngine.Events;
 public class Pellet : Powerup {
   
 
-
-  private float _length;
-  private UnityAction _action;
-  private UnityAction _endAction;
-
-  public override float length() { return _length; }
-  public override UnityAction startAction() { return _action; }
-  public override UnityAction endAction() { return _endAction; }
-
-
-
   public void Awake() {
-    // effect
-    _length = 0f;
-    _action = delegate {
-      
+    action = delegate {
       // disable some components
-      GetComponent<SphereCollider>().enabled = false;
-      GetComponent<MeshRenderer>().enabled = false;
+      GetComponent<Collider>().enabled = false;
+      GetComponent<Renderer>().enabled = false;
       ((Behaviour)gameObject.GetComponent("Halo")).enabled = false;
 
       // play sfx
       // picked-up animation?
 
       // add points
-      GameManager.Instance.pacmanData.score += Score.Pellet;
-	  GameManager.Instance.levelData.pelletsEaten += 1;
-
-    };
-    _endAction = delegate {
-      Destroy(gameObject);
+      GameManager gameManager = GameManager.Instance;
+      gameManager.pacmanData.score += Score.Pellet;
+      ++gameManager.levelData.pelletsEaten;
     };
   }
 

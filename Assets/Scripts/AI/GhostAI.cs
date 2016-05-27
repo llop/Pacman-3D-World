@@ -38,20 +38,79 @@ public abstract class GhostAI : MonoBehaviour {
   // and topography
   //-----------------------------------------------------------------------------------
 
+  protected GameManager gameManager;
   protected WaypointWalker walker;
   protected GameObject pacman;
   protected PlanetTopography topo;
 
+  protected int modesTableIndex;
+  protected List<KeyValuePair<GhostAIState, double>> modesTable;
+  protected double frightenedTime;
+  protected double liveTime;
+
   public void Awake() {
+    gameManager = GameManager.Instance;
     walker = GetComponent<WaypointWalker>();
     pacman = GameObject.FindGameObjectWithTag(Tags.Pacman);
     topo = GameObject.FindGameObjectWithTag(Tags.Planet).GetComponent<PlanetTopography>();
+
+    modesTable = gameManager.ghostModesForCurrentLevel();
+    resetMode();
+
     awake();
   }
 
   // override this method instead of Awake
   public virtual void awake() {}
 
+  // handle AI state 
+  public void Update() {
+    if (gameManager.paused || !gameManager.inGame) return;
+
+    if (_state == GhostAIState.Frightened) {
+      frightenedTime -= Time.deltaTime;
+      if (frightenedTime < 0.0) {
+        frightenedTime = 0.0;
+        _state = _previousState;
+      }
+    } else {
+      if (_state != GhostAIState.Dead) {
+        if (modesTableIndex >= 0 && liveTime >= 0.0) {
+          liveTime -= Time.deltaTime;
+          if (liveTime < 0.0) {
+            ++modesTableIndex;
+            _state = modesTable[modesTableIndex].Key;
+            liveTime = modesTable[modesTableIndex].Value;
+          }
+        }
+      }
+    }
+  }
+
+
+  //-----------------------------------------------------------------------------------
+  // animators can use this to pick a texture
+  //-----------------------------------------------------------------------------------
+
+  public void resetMode() {
+    frightenedTime = 0.0;
+    if (modesTable != null && modesTable.Count > 0) {
+      modesTableIndex = 0;
+      _state = modesTable[modesTableIndex].Key;
+      liveTime = modesTable[modesTableIndex].Value;
+    } else {
+      modesTableIndex = -1;
+      _state = GhostAIState.Chase;
+      liveTime = -1.0;
+    }
+  }
+
+
+  //-----------------------------------------------------------------------------------
+  // animators can use this to pick a texture
+  //-----------------------------------------------------------------------------------
+
+  public double remainingFrightenedTime { get { return frightenedTime; } }
 
 
   //-----------------------------------------------------------------------------------
@@ -69,12 +128,16 @@ public abstract class GhostAI : MonoBehaviour {
   //-----------------------------------------------------------------------------------
 
   private GhostAIState _state;
+  private GhostAIState _previousState;
   public GhostAIState state { 
     get { return _state; } 
     set {
       if ((_state == GhostAIState.Chase || _state == GhostAIState.Scatter) && _state != value)
         forceReverse = true;
+      _previousState = _state;
       _state = value;
+      if (_state == GhostAIState.Frightened)
+        frightenedTime = gameManager.ghostFrightenedTimeForCurrentLevel(); 
     }
   }
 

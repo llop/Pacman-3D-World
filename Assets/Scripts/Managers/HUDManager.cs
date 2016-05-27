@@ -28,7 +28,7 @@ public class HUDManager : MonoBehaviour {
   }
 
 
-  void Update() {
+  void OnGUI() {
     if (!gameManager.inGame) return;
 
     // pause?
@@ -72,6 +72,17 @@ public class HUDManager : MonoBehaviour {
       gameManager.paused = false;
       gameManager.transitionToScene(Tags.MenuScene);
     }, .5f);
+  }
+
+
+  //------------------------------------------------------------------------------------
+  // ready watermark
+  //------------------------------------------------------------------------------------
+
+  public Text readyText;
+
+  public void showReady(bool show) {
+    readyText.enabled = show; 
   }
 
 

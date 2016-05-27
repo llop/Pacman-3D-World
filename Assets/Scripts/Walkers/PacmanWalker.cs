@@ -51,8 +51,11 @@ public class PacmanWalker : WaypointWalker {
   public bool justLanded() { return isJustLanded; }
 
 
+  private PacmanAI ai;
+
   public override void awake() {
     gameManager.registerPacman(gameObject);
+    ai = GetComponent<PacmanAI>();
   }
 
   //----------------------------------------------------------------------------------------------------------
@@ -65,6 +68,8 @@ public class PacmanWalker : WaypointWalker {
     isJumpingUp = false;
     isJumpingDown = false;
     isJustLanded = false;
+
+    ai.powerTime = 0f;
   }
 
 
@@ -102,7 +107,8 @@ public class PacmanWalker : WaypointWalker {
   private void processMove() {
     isMoving = gameManager.pacmanData.alive && currentDirection != Direction.None;
     Vector3 moveDir = isMoving ? Vector3.forward : Vector3.zero;
-    moveAmount = moveDir * walkSpeed;
+    float speedMultiplier = walkSpeed * gameManager.pacmanSpeedMultiplier(ai.powerTime);
+    moveAmount = moveDir * speedMultiplier;
   }
 
 

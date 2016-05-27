@@ -36,7 +36,8 @@ public class GameManager : MonoBehaviour {
   public void Awake() {
     _instance = this;
     _paused = false;
-    _inGame = true; // false;
+    _inGame = false;
+    _gameOver = true;
 
     // register scene changed callback:
     // when the scene is considered 'loaded', most of the shit in it isn't
@@ -75,6 +76,9 @@ public class GameManager : MonoBehaviour {
   private void resetLevelData() {
     _levelData.pelletsEaten = 0;
     _levelData.pelletsTotal = 0;
+
+    _isPlayableLevel = false;
+    _levelManager = null;
   }
 
 
@@ -145,39 +149,29 @@ public class GameManager : MonoBehaviour {
     // needs to: play sfx
     //           play pacman dead animation
 
-    if (!_pacmanData.alive) return;
     _pacmanData.alive = false;
     _pacmanData.lives -= 1;
 
-    if (_pacmanData.lives <= 0) {
-      // if pacman had zero lives,
-      //   if current score is a hi-score, 
-      //     ask user for initials to store his score
-      //     game over screen
-      //   else just go to game over screen
+    if (_pacmanData.lives <= 0) doGameOver();
+    else fadeInAndOut(
+      delegate {
+        // on fade out complete:
+        // halt walkers 
+        // if in the middle of a game, wait for user input to restart
+        _inGame = false;
+        if (_isPlayableLevel) _levelManager.waitForInput();
 
-      transitionToScene(Tags.MenuScene);
+        // send everyone to their spawns (do a hard reset by calling the start method)
+        foreach (KeyValuePair<string, GameObject> ghostEntry in _ghostsGOs) 
+          ghostEntry.Value.GetComponent<WaypointWalker>().Start();
+        _pacmanGO.GetComponent<WaypointWalker>().Start();
 
-    } else {
-      fadeInAndOut(
-        delegate {
-          // on fade out complete, halt walkers 
-          _inGame = false;
-
-          // send everyone to their spawns (do a hard reset by calling the start method)
-          foreach (KeyValuePair<string, GameObject> ghostEntry in _ghostsGOs) 
-            ghostEntry.Value.GetComponent<WaypointWalker>().Start();
-          _pacmanGO.GetComponent<WaypointWalker>().Start();
-
-          // bring pacman back to life
-          revivePacman();
-        },
-        delegate {
-          // ok, do your thang
-          _inGame = true;
-        });
-      
-    }
+        // bring pacman back to life
+        revivePacman();
+      },
+      delegate {
+        // do nothing!
+      });
   }
 
   public void revivePacman() {
@@ -225,16 +219,162 @@ public class GameManager : MonoBehaviour {
   }
 
 
+  //-------------------------------------------------------------------
+  // ghost mode table
+  //-------------------------------------------------------------------
+
+  // Mode     Level 1     Levels 2-4     Levels 5+
+  // ----------------------------------------------
+  // Scatter  7           7              5
+  // Chase    20          20             20
+  // Scatter  7           7              5
+  // Chase    20          20             20
+  // Scatter  5           5              5
+  // Chase    20          1033           1037
+  // Scatter  5           1/60           1/60
+  // Chase    indefinite  indefinite     indefinite
+
+  public List<KeyValuePair<GhostAIState, double>> ghostModesForCurrentLevel() {
+    if (_currentScene == Tags.Scene01) {
+      List<KeyValuePair<GhostAIState, double>> ghostModesLevel1 = new List<KeyValuePair<GhostAIState, double>>();
+      ghostModesLevel1.Add(new KeyValuePair<GhostAIState, double>(GhostAIState.Scatter, 7.0));
+      ghostModesLevel1.Add(new KeyValuePair<GhostAIState, double>(GhostAIState.Chase, 20.0));
+      ghostModesLevel1.Add(new KeyValuePair<GhostAIState, double>(GhostAIState.Scatter, 7.0));
+      ghostModesLevel1.Add(new KeyValuePair<GhostAIState, double>(GhostAIState.Chase, 20.0));
+      ghostModesLevel1.Add(new KeyValuePair<GhostAIState, double>(GhostAIState.Scatter, 5.0));
+      ghostModesLevel1.Add(new KeyValuePair<GhostAIState, double>(GhostAIState.Chase, 20.0));
+      ghostModesLevel1.Add(new KeyValuePair<GhostAIState, double>(GhostAIState.Scatter, 5.0));
+      ghostModesLevel1.Add(new KeyValuePair<GhostAIState, double>(GhostAIState.Chase, -1.0));
+      return ghostModesLevel1;
+    } else if (_currentScene == Tags.Scene02) {
+      List<KeyValuePair<GhostAIState, double>> ghostModesLevel2To4 = new List<KeyValuePair<GhostAIState, double>>();
+      ghostModesLevel2To4.Add(new KeyValuePair<GhostAIState, double>(GhostAIState.Scatter, 7.0));
+      ghostModesLevel2To4.Add(new KeyValuePair<GhostAIState, double>(GhostAIState.Chase, 20.0));
+      ghostModesLevel2To4.Add(new KeyValuePair<GhostAIState, double>(GhostAIState.Scatter, 7.0));
+      ghostModesLevel2To4.Add(new KeyValuePair<GhostAIState, double>(GhostAIState.Chase, 20.0));
+      ghostModesLevel2To4.Add(new KeyValuePair<GhostAIState, double>(GhostAIState.Scatter, 5.0));
+      ghostModesLevel2To4.Add(new KeyValuePair<GhostAIState, double>(GhostAIState.Chase, 1033.0));
+      ghostModesLevel2To4.Add(new KeyValuePair<GhostAIState, double>(GhostAIState.Scatter, 1.0 / 60.0));
+      ghostModesLevel2To4.Add(new KeyValuePair<GhostAIState, double>(GhostAIState.Chase, -1.0));
+      return ghostModesLevel2To4;
+    } else if (_currentScene == Tags.Scene03) {
+      List<KeyValuePair<GhostAIState, double>> ghostModesLevel5Plus = new List<KeyValuePair<GhostAIState, double>>();
+      ghostModesLevel5Plus.Add(new KeyValuePair<GhostAIState, double>(GhostAIState.Scatter, 5.0));
+      ghostModesLevel5Plus.Add(new KeyValuePair<GhostAIState, double>(GhostAIState.Chase, 20.0));
+      ghostModesLevel5Plus.Add(new KeyValuePair<GhostAIState, double>(GhostAIState.Scatter, 5.0));
+      ghostModesLevel5Plus.Add(new KeyValuePair<GhostAIState, double>(GhostAIState.Chase, 20.0));
+      ghostModesLevel5Plus.Add(new KeyValuePair<GhostAIState, double>(GhostAIState.Scatter, 5.0));
+      ghostModesLevel5Plus.Add(new KeyValuePair<GhostAIState, double>(GhostAIState.Chase, 1037.0));
+      ghostModesLevel5Plus.Add(new KeyValuePair<GhostAIState, double>(GhostAIState.Scatter, 1.0 / 60.0));
+      ghostModesLevel5Plus.Add(new KeyValuePair<GhostAIState, double>(GhostAIState.Chase, -1.0));
+      return ghostModesLevel5Plus;
+    }
+    return null;
+  }
+
+  public double ghostFrightenedTimeForCurrentLevel() {
+    if (_currentScene == Tags.Scene01) return 5.0;
+    else if (_currentScene == Tags.Scene02) return 5.0;
+    else if (_currentScene == Tags.Scene03) return 3.0;
+    return 5.0;
+  }
+
 
   //-------------------------------------------------------------------
-  // power pellet mode activation/deactivation
+  // character speed multipliers
   //-------------------------------------------------------------------
 
-  public void startGame() {
+  public float pacmanSpeedMultiplier(float powerTime) {
+    float multiplier = 1f;
+    if (_currentScene == Tags.Scene01) multiplier = .8f;
+    else if (_currentScene == Tags.Scene02) multiplier = .9f;
+    else if (_currentScene == Tags.Scene03) multiplier = 1f;
+    if (powerTime > 0f) multiplier = Mathf.Clamp01(multiplier + .5f); 
+    return multiplier;
+  }
+
+  public float ghostSpeedMultiplier(GhostAIState ghostState) {
+    if (ghostState != GhostAIState.Dead) {
+      if (_currentScene == Tags.Scene01) return ghostState == GhostAIState.Frightened ? .4f : .75f;
+      if (_currentScene == Tags.Scene02) return ghostState == GhostAIState.Frightened ? .45f : .85f;
+      if (_currentScene == Tags.Scene03) return ghostState == GhostAIState.Frightened ? .5f : .95f;
+    }
+    return 1f;
+  }
+
+
+
+  //-------------------------------------------------------------------
+  // if the scene is a playable level, we can access its level manager
+  //-------------------------------------------------------------------
+
+  private bool _isPlayableLevel;
+  private LevelManager _levelManager;
+
+  public void registerPlayableLevel(LevelManager levelManager) {
+    _isPlayableLevel = true;
+    _levelManager = levelManager;
+  }
+
+
+  //-------------------------------------------------------------------
+  // can we play?
+  //-------------------------------------------------------------------
+
+  private bool _inGame;
+  public bool inGame { 
+    get { return _inGame; } 
+    set { _inGame = value; }
+  }
+    
+
+  //-------------------------------------------------------------------
+  // is this game over? (ie. did pacman lose all his lives?)
+  //-------------------------------------------------------------------
+
+  private bool _gameOver;
+
+  public bool gameOver {
+    get { return _gameOver; }
+  }
+
+
+  //-------------------------------------------------------------------
+  // call these to finish the game
+  //-------------------------------------------------------------------
+
+  public void doGameComplete() {
+    transitionToScene(Tags.GameCompleteScene);
+    // after game complete scene, must check for hi score!
+  }
+
+  public void doGameOver() {
+    _gameOver = true;
+    if (HiScoreManager.Instance.isHiScore(_pacmanData.score)) transitionToScene(Tags.HiScoreScene);
+    else transitionToScene(Tags.GameOverScene);
+  }
+
+
+
+  //-------------------------------------------------------------------
+  // call this to start a game
+  //-------------------------------------------------------------------
+
+  private void initGame() {
     resetPacmanData();        // 
     resetLevelData();         // should happen on every level load
     _activePowerPellets = 0;
-    transitionToScene(Tags.Scene1);
+    _gameOver = false;
+  }
+
+  public void doStartGame() {
+    initGame();
+    transitionToScene(Tags.Scene01);
+  }
+
+  public void doContinueGame() {
+    initGame();
+    transitionToScene(_lastPlayedLevel);
   }
 
 
@@ -243,6 +383,9 @@ public class GameManager : MonoBehaviour {
   //-------------------------------------------------------------------
 
   private int _activePowerPellets;
+
+
+
   public void powerPelletEffectStart() { 
     ++_activePowerPellets;
 
@@ -274,7 +417,7 @@ public class GameManager : MonoBehaviour {
       }
     }
   }
-
+    
 
 
   //-------------------------------------------------------------------
@@ -295,8 +438,11 @@ public class GameManager : MonoBehaviour {
   // fade in/out between scenes
   //-------------------------------------------------------------------
 
+  private string _lastPlayedLevel;
+
   private string _currentScene;
   public string currentScene { get { return _currentScene; } }
+
 
   public void transitionToScene(string sceneName) {
     _inGame = false;
@@ -306,7 +452,9 @@ public class GameManager : MonoBehaviour {
 
         // reset leveldata
         resetLevelData();
+
         // load another scene
+        if (_currentScene != null && _currentScene.StartsWith(Tags.LevelPrefix)) _lastPlayedLevel = _currentScene;
         _currentScene = sceneName;
         SceneManager.LoadScene(_currentScene);
 
@@ -318,22 +466,14 @@ public class GameManager : MonoBehaviour {
 
   // we need to manually set a timeout for characters to start moving in the scene
   private void activeSceneChanged(Scene old, Scene justActivated) {
-    bool newInGame = _currentScene != Tags.MenuScene;
-    if (newInGame) callLater(delegate {
+    //bool newInGame = _currentScene != Tags.MenuScene;
+    //if (newInGame) callLater(delegate {
         // we can play as long as we aren't in the main menu
-        _inGame = newInGame;
-      }, 2f);
-    else _inGame = newInGame;
+    //_inGame = newInGame;
+    //}, 2f);
+    //else _inGame = newInGame;
+
   }
-
-
-
-  //-------------------------------------------------------------------
-  // can we play?
-  //-------------------------------------------------------------------
-
-  private bool _inGame;
-  public bool inGame { get { return _inGame; } }
 
 
 
