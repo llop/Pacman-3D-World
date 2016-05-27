@@ -23,7 +23,7 @@ public class PowerPellet : Powerup {
       ++gameManager.levelData.pelletsEaten;
 
       // activate power mode?
-      gameManager.powerPelletEffectStart();
+      gameManager.powerPelletEaten();
 
     };
   }

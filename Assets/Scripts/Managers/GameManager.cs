@@ -38,6 +38,8 @@ public class GameManager : MonoBehaviour {
     _paused = false;
     _inGame = false;
     _gameOver = true;
+    _ghostScoreMultiplier = 1;
+    _isPlayableLevel = false;
 
     // register scene changed callback:
     // when the scene is considered 'loaded', most of the shit in it isn't
@@ -46,7 +48,6 @@ public class GameManager : MonoBehaviour {
 
     resetPacmanData();        // 
     resetLevelData();         // should happen on every level load
-    _activePowerPellets = 0;
   }
 
 
@@ -201,6 +202,7 @@ public class GameManager : MonoBehaviour {
     Physics.IgnoreCollision(ghostCollider, pacmanCollider, true);
 
     // give points to pacman
+    if (_pacmanGO.GetComponent<PacmanAI>().powerTime <= 0f) _ghostScoreMultiplier = 1;
     _pacmanData.score += Score.Ghost * _ghostScoreMultiplier;
     _ghostScoreMultiplier *= Score.GhostEatenMultiplierFactor;
   }
@@ -234,49 +236,49 @@ public class GameManager : MonoBehaviour {
   // Scatter  5           1/60           1/60
   // Chase    indefinite  indefinite     indefinite
 
-  public List<KeyValuePair<GhostAIState, double>> ghostModesForCurrentLevel() {
+  public List<KeyValuePair<GhostAIState, float>> ghostModesForCurrentLevel() {
     if (_currentScene == Tags.Scene01) {
-      List<KeyValuePair<GhostAIState, double>> ghostModesLevel1 = new List<KeyValuePair<GhostAIState, double>>();
-      ghostModesLevel1.Add(new KeyValuePair<GhostAIState, double>(GhostAIState.Scatter, 7.0));
-      ghostModesLevel1.Add(new KeyValuePair<GhostAIState, double>(GhostAIState.Chase, 20.0));
-      ghostModesLevel1.Add(new KeyValuePair<GhostAIState, double>(GhostAIState.Scatter, 7.0));
-      ghostModesLevel1.Add(new KeyValuePair<GhostAIState, double>(GhostAIState.Chase, 20.0));
-      ghostModesLevel1.Add(new KeyValuePair<GhostAIState, double>(GhostAIState.Scatter, 5.0));
-      ghostModesLevel1.Add(new KeyValuePair<GhostAIState, double>(GhostAIState.Chase, 20.0));
-      ghostModesLevel1.Add(new KeyValuePair<GhostAIState, double>(GhostAIState.Scatter, 5.0));
-      ghostModesLevel1.Add(new KeyValuePair<GhostAIState, double>(GhostAIState.Chase, -1.0));
+      List<KeyValuePair<GhostAIState, float>> ghostModesLevel1 = new List<KeyValuePair<GhostAIState, float>>();
+      ghostModesLevel1.Add(new KeyValuePair<GhostAIState, float>(GhostAIState.Scatter, 7f));
+      ghostModesLevel1.Add(new KeyValuePair<GhostAIState, float>(GhostAIState.Chase, 20f));
+      ghostModesLevel1.Add(new KeyValuePair<GhostAIState, float>(GhostAIState.Scatter, 7f));
+      ghostModesLevel1.Add(new KeyValuePair<GhostAIState, float>(GhostAIState.Chase, 20f));
+      ghostModesLevel1.Add(new KeyValuePair<GhostAIState, float>(GhostAIState.Scatter, 5f));
+      ghostModesLevel1.Add(new KeyValuePair<GhostAIState, float>(GhostAIState.Chase, 20f));
+      ghostModesLevel1.Add(new KeyValuePair<GhostAIState, float>(GhostAIState.Scatter, 5f));
+      ghostModesLevel1.Add(new KeyValuePair<GhostAIState, float>(GhostAIState.Chase, -1f));
       return ghostModesLevel1;
     } else if (_currentScene == Tags.Scene02) {
-      List<KeyValuePair<GhostAIState, double>> ghostModesLevel2To4 = new List<KeyValuePair<GhostAIState, double>>();
-      ghostModesLevel2To4.Add(new KeyValuePair<GhostAIState, double>(GhostAIState.Scatter, 7.0));
-      ghostModesLevel2To4.Add(new KeyValuePair<GhostAIState, double>(GhostAIState.Chase, 20.0));
-      ghostModesLevel2To4.Add(new KeyValuePair<GhostAIState, double>(GhostAIState.Scatter, 7.0));
-      ghostModesLevel2To4.Add(new KeyValuePair<GhostAIState, double>(GhostAIState.Chase, 20.0));
-      ghostModesLevel2To4.Add(new KeyValuePair<GhostAIState, double>(GhostAIState.Scatter, 5.0));
-      ghostModesLevel2To4.Add(new KeyValuePair<GhostAIState, double>(GhostAIState.Chase, 1033.0));
-      ghostModesLevel2To4.Add(new KeyValuePair<GhostAIState, double>(GhostAIState.Scatter, 1.0 / 60.0));
-      ghostModesLevel2To4.Add(new KeyValuePair<GhostAIState, double>(GhostAIState.Chase, -1.0));
+      List<KeyValuePair<GhostAIState, float>> ghostModesLevel2To4 = new List<KeyValuePair<GhostAIState, float>>();
+      ghostModesLevel2To4.Add(new KeyValuePair<GhostAIState, float>(GhostAIState.Scatter, 7f));
+      ghostModesLevel2To4.Add(new KeyValuePair<GhostAIState, float>(GhostAIState.Chase, 20f));
+      ghostModesLevel2To4.Add(new KeyValuePair<GhostAIState, float>(GhostAIState.Scatter, 7f));
+      ghostModesLevel2To4.Add(new KeyValuePair<GhostAIState, float>(GhostAIState.Chase, 20f));
+      ghostModesLevel2To4.Add(new KeyValuePair<GhostAIState, float>(GhostAIState.Scatter, 5f));
+      ghostModesLevel2To4.Add(new KeyValuePair<GhostAIState, float>(GhostAIState.Chase, 1033f));
+      ghostModesLevel2To4.Add(new KeyValuePair<GhostAIState, float>(GhostAIState.Scatter, 1f / 60f));
+      ghostModesLevel2To4.Add(new KeyValuePair<GhostAIState, float>(GhostAIState.Chase, -1f));
       return ghostModesLevel2To4;
     } else if (_currentScene == Tags.Scene03) {
-      List<KeyValuePair<GhostAIState, double>> ghostModesLevel5Plus = new List<KeyValuePair<GhostAIState, double>>();
-      ghostModesLevel5Plus.Add(new KeyValuePair<GhostAIState, double>(GhostAIState.Scatter, 5.0));
-      ghostModesLevel5Plus.Add(new KeyValuePair<GhostAIState, double>(GhostAIState.Chase, 20.0));
-      ghostModesLevel5Plus.Add(new KeyValuePair<GhostAIState, double>(GhostAIState.Scatter, 5.0));
-      ghostModesLevel5Plus.Add(new KeyValuePair<GhostAIState, double>(GhostAIState.Chase, 20.0));
-      ghostModesLevel5Plus.Add(new KeyValuePair<GhostAIState, double>(GhostAIState.Scatter, 5.0));
-      ghostModesLevel5Plus.Add(new KeyValuePair<GhostAIState, double>(GhostAIState.Chase, 1037.0));
-      ghostModesLevel5Plus.Add(new KeyValuePair<GhostAIState, double>(GhostAIState.Scatter, 1.0 / 60.0));
-      ghostModesLevel5Plus.Add(new KeyValuePair<GhostAIState, double>(GhostAIState.Chase, -1.0));
+      List<KeyValuePair<GhostAIState, float>> ghostModesLevel5Plus = new List<KeyValuePair<GhostAIState, float>>();
+      ghostModesLevel5Plus.Add(new KeyValuePair<GhostAIState, float>(GhostAIState.Scatter, 5f));
+      ghostModesLevel5Plus.Add(new KeyValuePair<GhostAIState, float>(GhostAIState.Chase, 20f));
+      ghostModesLevel5Plus.Add(new KeyValuePair<GhostAIState, float>(GhostAIState.Scatter, 5f));
+      ghostModesLevel5Plus.Add(new KeyValuePair<GhostAIState, float>(GhostAIState.Chase, 20f));
+      ghostModesLevel5Plus.Add(new KeyValuePair<GhostAIState, float>(GhostAIState.Scatter, 5f));
+      ghostModesLevel5Plus.Add(new KeyValuePair<GhostAIState, float>(GhostAIState.Chase, 1037f));
+      ghostModesLevel5Plus.Add(new KeyValuePair<GhostAIState, float>(GhostAIState.Scatter, 1f / 60f));
+      ghostModesLevel5Plus.Add(new KeyValuePair<GhostAIState, float>(GhostAIState.Chase, -1f));
       return ghostModesLevel5Plus;
     }
     return null;
   }
 
-  public double ghostFrightenedTimeForCurrentLevel() {
-    if (_currentScene == Tags.Scene01) return 5.0;
-    else if (_currentScene == Tags.Scene02) return 5.0;
-    else if (_currentScene == Tags.Scene03) return 3.0;
-    return 5.0;
+  public float ghostFrightenedTimeForCurrentLevel() {
+    if (_currentScene == Tags.Scene01) return 5f;
+    else if (_currentScene == Tags.Scene02) return 5f;
+    else if (_currentScene == Tags.Scene03) return 3f;
+    return 5f;
   }
 
 
@@ -363,7 +365,6 @@ public class GameManager : MonoBehaviour {
   private void initGame() {
     resetPacmanData();        // 
     resetLevelData();         // should happen on every level load
-    _activePowerPellets = 0;
     _gameOver = false;
   }
 
@@ -382,42 +383,13 @@ public class GameManager : MonoBehaviour {
   // power pellet mode activation/deactivation
   //-------------------------------------------------------------------
 
-  private int _activePowerPellets;
+  public void powerPelletEaten() {
+    _pacmanGO.GetComponent<PacmanAI>().powerTime = ghostFrightenedTimeForCurrentLevel();
 
-
-
-  public void powerPelletEffectStart() { 
-    ++_activePowerPellets;
-
-    if (_activePowerPellets == 1) {
-      
-      // init score multiplier
-      _ghostScoreMultiplier = 1;
-
-      // scaredy ghosts!
-      foreach (KeyValuePair<string, GameObject> ghostEntry in _ghostsGOs) {
-        GhostAI ai = ghostEntry.Value.GetComponent<GhostAI>();
-        if (ai.state == GhostAIState.Chase || ai.state == GhostAIState.Scatter) 
-          ai.state = GhostAIState.Frightened;
-      }
-    }
-  }
-
-  public void powerPelletEffectEnd() { 
-    --_activePowerPellets; 
-
-    if (_activePowerPellets == 0) {
-      // reset score multiplier
-      _ghostScoreMultiplier = 1;
-
-      // ghosts go back to patrol mode
-      foreach (KeyValuePair<string, GameObject> ghostEntry in _ghostsGOs) {
-        GhostAI ai = ghostEntry.Value.GetComponent<GhostAI>();
-        if (ai.state == GhostAIState.Frightened) ai.state = GhostAIState.Chase;
-      }
-    }
-  }
-    
+    // scaredy ghosts!
+    foreach (KeyValuePair<string, GameObject> ghostEntry in _ghostsGOs) 
+      ghostEntry.Value.GetComponent<GhostAI>().scare();
+  }    
 
 
   //-------------------------------------------------------------------
@@ -446,6 +418,12 @@ public class GameManager : MonoBehaviour {
 
   public void transitionToScene(string sceneName) {
     _inGame = false;
+    if (_isPlayableLevel) {
+      // halt walkers
+      foreach (KeyValuePair<string, GameObject> ghostEntry in _ghostsGOs) 
+        ghostEntry.Value.GetComponent<WaypointWalker>().halt();
+      _pacmanGO.GetComponent<WaypointWalker>().halt();
+    }
 
     fadeInAndOut(
       delegate {

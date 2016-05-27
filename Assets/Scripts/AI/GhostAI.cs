@@ -44,9 +44,9 @@ public abstract class GhostAI : MonoBehaviour {
   protected PlanetTopography topo;
 
   protected int modesTableIndex;
-  protected List<KeyValuePair<GhostAIState, double>> modesTable;
-  protected double frightenedTime;
-  protected double liveTime;
+  protected List<KeyValuePair<GhostAIState, float>> modesTable;
+  protected float frightenedTime;
+  protected float liveTime;
 
   public void Awake() {
     gameManager = GameManager.Instance;
@@ -69,15 +69,15 @@ public abstract class GhostAI : MonoBehaviour {
 
     if (_state == GhostAIState.Frightened) {
       frightenedTime -= Time.deltaTime;
-      if (frightenedTime < 0.0) {
-        frightenedTime = 0.0;
+      if (frightenedTime < 0f) {
+        frightenedTime = 0f;
         _state = _previousState;
       }
     } else {
       if (_state != GhostAIState.Dead) {
-        if (modesTableIndex >= 0 && liveTime >= 0.0) {
+        if (modesTableIndex >= 0 && liveTime >= 0f) {
           liveTime -= Time.deltaTime;
-          if (liveTime < 0.0) {
+          if (liveTime < 0f) {
             ++modesTableIndex;
             _state = modesTable[modesTableIndex].Key;
             liveTime = modesTable[modesTableIndex].Value;
@@ -93,7 +93,7 @@ public abstract class GhostAI : MonoBehaviour {
   //-----------------------------------------------------------------------------------
 
   public void resetMode() {
-    frightenedTime = 0.0;
+    frightenedTime = 0f;
     if (modesTable != null && modesTable.Count > 0) {
       modesTableIndex = 0;
       _state = modesTable[modesTableIndex].Key;
@@ -101,7 +101,7 @@ public abstract class GhostAI : MonoBehaviour {
     } else {
       modesTableIndex = -1;
       _state = GhostAIState.Chase;
-      liveTime = -1.0;
+      liveTime = -1f;
     }
   }
 
@@ -124,6 +124,17 @@ public abstract class GhostAI : MonoBehaviour {
 
 
   //-----------------------------------------------------------------------------------
+  // call this to make scare ghost
+  //-----------------------------------------------------------------------------------
+
+  public void scare() {
+    if (_state == GhostAIState.Dead) return;
+    frightenedTime = gameManager.ghostFrightenedTimeForCurrentLevel();
+    if (_state != GhostAIState.Frightened) state = GhostAIState.Frightened;
+  }
+
+
+  //-----------------------------------------------------------------------------------
   // ghost state determines what a ghost will do when they reach an intersection
   //-----------------------------------------------------------------------------------
 
@@ -132,12 +143,15 @@ public abstract class GhostAI : MonoBehaviour {
   public GhostAIState state { 
     get { return _state; } 
     set {
-      if ((_state == GhostAIState.Chase || _state == GhostAIState.Scatter) && _state != value)
-        forceReverse = true;
+      // ghosts are forced to reverse direction by the system anytime the mode changes from: 
+      // chase-to-scatter, chase-to-frightened, scatter-to-chase, and scatter-to-frightened 
+      // ghosts do not reverse direction when changing back from frightened to chase or scatter modes
+      forceReverse = (_state == GhostAIState.Chase && 
+          (value == GhostAIState.Scatter || value == GhostAIState.Frightened))
+        || (_state == GhostAIState.Scatter && 
+          (value == GhostAIState.Chase || value == GhostAIState.Frightened));
       _previousState = _state;
       _state = value;
-      if (_state == GhostAIState.Frightened)
-        frightenedTime = gameManager.ghostFrightenedTimeForCurrentLevel(); 
     }
   }
 

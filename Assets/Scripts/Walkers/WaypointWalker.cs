@@ -61,6 +61,11 @@ public abstract class WaypointWalker : MonoBehaviour {
 
   public Direction direction() { return currentDirection; }
 
+  public virtual void halt() {
+    inputDirection = Direction.None;
+    currentDirection = Direction.None;
+  }
+
 
   //----------------------------------------------------------------------------------------------------------
   // movement

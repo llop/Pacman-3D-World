@@ -58,6 +58,17 @@ public class PacmanWalker : WaypointWalker {
     ai = GetComponent<PacmanAI>();
   }
 
+
+  public override void halt() {
+    base.halt();
+    isMoving = false;
+    isGrounded = true;
+    isJumpingUp = false;
+    isJumpingDown = false;
+    isJustLanded = false;
+  }
+
+
   //----------------------------------------------------------------------------------------------------------
   // default implementation for 'start' state initialization is provided here
   //----------------------------------------------------------------------------------------------------------
@@ -85,7 +96,8 @@ public class PacmanWalker : WaypointWalker {
     if (currentDirection == Direction.None || currentDirection.isOpposite(inputDirection) || atNextNode()) 
       processDirection();
 
-	topo.updateRotation (transform, nextNode.transform.position);
+    if (gameManager.pacmanData.alive && currentDirection != Direction.None)
+	    topo.updateRotation (transform, nextNode.transform.position);
   }
 
   public override void updateMove() {
