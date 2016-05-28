@@ -71,7 +71,7 @@ public abstract class WaypointWalker : MonoBehaviour {
   // movement
   //----------------------------------------------------------------------------------------------------------
 
-  public float walkSpeed = 8f;          // how fast
+  public float walkSpeed = 5f;          // how fast
 
   protected Vector3 moveAmount;
 

@@ -12,7 +12,7 @@ public class PacmanWalker : WaypointWalker {
   //----------------------------------------------------------------------------------------------------------
 
   protected float jumpTolerance = .4f;    // used to decide when the character is descending
-  public float jumpForce = 400f;          // how high
+  public float jumpForce = 200f;          // how high
 
 
   //----------------------------------------------------------------------------------------------------------

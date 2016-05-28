@@ -8,7 +8,7 @@ public class SphereTopography : PlanetTopography {
 
 
 
-  protected static float planetRadius = 20f;
+  protected static float planetRadius = 10f;
 
 
 
@@ -94,18 +94,19 @@ public class SphereTopography : PlanetTopography {
 		Vector3 direction1 = (one.transform.position - transform.position).normalized;
 		Vector3 direction2 = (two.transform.position - transform.position).normalized;
 
-		MeshCollider col = GetComponent<MeshCollider> ();
+		Collider col = GetComponent<Collider> ();
 
 		for (int i = 0; i <= distance; i++) {
 			float ratio = (float)i/(float)distance;
 			Vector3 direction = Vector3.Slerp (direction1, direction2, ratio);
 			Ray ray = new Ray(transform.position, direction);
 			// reverse ray
-			ray.origin = ray.GetPoint (2 * planetRadius);
+			ray.origin = ray.GetPoint (4 * planetRadius);
 			ray.direction = -direction;
 			RaycastHit hit;
-			col.Raycast (ray, out hit, 2 * planetRadius);
+			col.Raycast (ray, out hit, 4 * planetRadius);
 			Vector3 position = hit.point;
+      Debug.Log("ha "+ray.origin+' '+ray.direction+' '+position);
 			//print (position);
 			position += direction * 0.5f;
 			positions.Add (position);
