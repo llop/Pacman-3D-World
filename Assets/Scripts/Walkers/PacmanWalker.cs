@@ -182,12 +182,14 @@ public class PacmanWalker : WaypointWalker {
         RaycastHit hit;
         Vector3 position = transform.position + transform.up.normalized;
         Ray ray = new Ray(position, -transform.up);
-        isGrounded = Physics.Raycast(ray, out hit, 1.1f, groundedMask);
+        isGrounded = Physics.Raycast(ray, out hit, 100.5f, groundedMask);
         if (isGrounded) {
           isJustLanded = true;
           isJumpingUp = false;
           isJumpingDown = false;
         }
+        Debug.DrawLine(position, position - transform.up * 1.1f);
+        Debug.Log(isGrounded?"yes":"no");
       }
     }
   }

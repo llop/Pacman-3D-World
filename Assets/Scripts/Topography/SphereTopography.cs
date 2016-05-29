@@ -98,17 +98,16 @@ public class SphereTopography : PlanetTopography {
 
 		for (int i = 0; i <= distance; i++) {
 			float ratio = (float)i/(float)distance;
-			Vector3 direction = Vector3.Slerp (direction1, direction2, ratio);
+			Vector3 direction = Vector3.Slerp(direction1, direction2, ratio);
 			Ray ray = new Ray(transform.position, direction);
 			// reverse ray
-			ray.origin = ray.GetPoint (4 * planetRadius);
+			ray.origin = ray.GetPoint (2 * planetRadius);
 			ray.direction = -direction;
 			RaycastHit hit;
-			col.Raycast (ray, out hit, 4 * planetRadius);
+			col.Raycast(ray, out hit, 2 * planetRadius);
 			Vector3 position = hit.point;
-      Debug.Log("ha "+ray.origin+' '+ray.direction+' '+position);
-			//print (position);
-			position += direction * 0.5f;
+      //print (position);
+			position += direction * 0.25f;
 			positions.Add (position);
 		}
 	}
