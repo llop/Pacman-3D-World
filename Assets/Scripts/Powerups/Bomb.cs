@@ -1,8 +1,6 @@
 ﻿using UnityEngine;
 using System.Collections;
 
-
-
 public class Bomb : Powerup {
   
 
@@ -19,7 +17,4 @@ public class Bomb : Powerup {
       Destroy(transform.gameObject);
     };
   }
-
-
-
 }
