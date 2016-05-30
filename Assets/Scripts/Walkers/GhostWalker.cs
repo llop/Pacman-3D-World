@@ -68,15 +68,13 @@ public class GhostWalker : WaypointWalker {
   public override void updateDirection() {
     // turn when state update forced a direction change
     // or when the ghost reaches an itersection
-    if (ai.forceReverse || nextNodePlane.GetDistanceToPoint(transform.position) <= turnTolerance) 
-      processDirection();
+    if (ai.forceReverse || atNextNode()) processDirection();
   }
 
   public override void updateMove() {
     // ghost moves forward
     float speedMultiplier = walkSpeed * gameManager.ghostSpeedMultiplier(ai.state);
     moveAmount = Vector3.forward * speedMultiplier;
-    moveAmount = Vector3.zero;
   }
 
   public override void update() {

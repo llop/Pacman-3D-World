@@ -15,11 +15,14 @@ public class LevelManager : MonoBehaviour {
   private GameManager gameManager;
   private HUDManager hudManager;
 
+  public ObjectPool objectPool;
+
 
   public void Start() {
     gameManager = GameManager.Instance;
     gameManager.registerPlayableLevel(this);
     hudManager = GameObject.FindGameObjectWithTag(Tags.HUD).GetComponent<HUDManager>();
+    objectPool = GetComponent<ObjectPool>();
   }
 
 

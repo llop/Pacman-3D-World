@@ -19,7 +19,8 @@ public class PacmanWalker : WaypointWalker {
   // input method shouldn't change too much so implementation is provided here
   //----------------------------------------------------------------------------------------------------------
 
-  protected bool inputJump; 
+  protected bool inputJump;
+  protected bool inputBomb;
 
   public override void updateInput() {
     if (!gameManager.pacmanData.alive) return;
@@ -31,6 +32,7 @@ public class PacmanWalker : WaypointWalker {
     else if (Input.GetKeyDown(KeyCode.RightArrow)) inputDirection = Direction.Right;
 
     inputJump = Input.GetKeyDown(KeyCode.X);
+    inputBomb = Input.GetKeyDown(KeyCode.B);
   }
 
 
@@ -101,6 +103,7 @@ public class PacmanWalker : WaypointWalker {
     // movement + jump
     processMove();
     processJump();
+    plantBobOmb();
   }
 
   public override void update() {
@@ -193,6 +196,34 @@ public class PacmanWalker : WaypointWalker {
       }
     }
   }
+
+
+  //----------------------------------------------------------------------------------------------------------
+  // plant a bomb
+  //----------------------------------------------------------------------------------------------------------
+
+  private void plantBobOmb() {
+    if (inputBomb) {
+      if (gameManager.pacmanData.bombs > 0) {
+        --gameManager.pacmanData.bombs;
+        // spawn in front of pacman
+
+        ObjectPool objectPool = gameManager.levelManager.objectPool;
+        GameObject bobOmbInstance = objectPool.instantiate(Tags.BobOmb);
+          // set transform
+        Vector3 bobOmbPosition = transform.position;
+        bobOmbPosition += transform.up.normalized * .5f;
+        bobOmbPosition += transform.forward.normalized;
+        bobOmbInstance.transform.position = bobOmbPosition;
+        bobOmbInstance.transform.rotation = transform.rotation;
+
+        // init BobOmb component
+        BobOmb bobOmb = bobOmbInstance.GetComponent<BobOmb>();
+        bobOmb.init(currentNode, nextNode, currentDirection);
+      }
+    }
+  }
+
 
 
   //----------------------------------------------------------------------------------------------------------

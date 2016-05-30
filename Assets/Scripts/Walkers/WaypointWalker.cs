@@ -128,8 +128,6 @@ public abstract class WaypointWalker : MonoBehaviour {
   public virtual void startState() {}
 
   public virtual void start() {
-    topo.updatePlane(currentNode.transform.position, nextNode.transform.position, ref nextNodePlane);
-    topo.updateRotation(transform, nextNode.transform.position);
   }
 
   public void Start() {

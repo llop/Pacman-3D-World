@@ -63,6 +63,7 @@ public class GameManager : MonoBehaviour {
     _pacmanData.alive = true;
     _pacmanData.lives = 3;
     _pacmanData.score = 0;
+    _pacmanData.bombs = 0;
   }
 
 
@@ -312,6 +313,8 @@ public class GameManager : MonoBehaviour {
 
   private bool _isPlayableLevel;
   private LevelManager _levelManager;
+
+  public LevelManager levelManager { get { return _levelManager; } }
 
   public void registerPlayableLevel(LevelManager levelManager) {
     _isPlayableLevel = true;

@@ -55,5 +55,10 @@ public class Tags {
   public static string HiScoreInput = "HiScoreInput";
 
 
+  public static string BobOmb = "BobOmb";
+  public static string BombBoom = "BombBoom";
+  public static string BombFireball = "BombFireball";
+  public static string ExplosionWalker = "ExplosionWalker";
+
 
 }
