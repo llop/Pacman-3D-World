@@ -130,7 +130,7 @@ public class PacmanWalker : WaypointWalker {
   // handle turns
   //------------------------------------------------------------------------
 
-  private void processDirection() {
+	override protected void processDirection() {
     // reset nodes
     currentNode = nextNode;
 

@@ -7,7 +7,8 @@ public class WaypointNode : MonoBehaviour {
 
 
   public bool pacmanWalkable = true;
-	public bool powerPellet = false;
+  public bool powerPellet = false;
+	public WaypointNode twin = null;
 
 
   private WaypointNode front;

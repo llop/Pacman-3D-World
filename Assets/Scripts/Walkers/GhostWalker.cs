@@ -87,7 +87,7 @@ public class GhostWalker : WaypointWalker {
   // handle turns
   //------------------------------------------------------------------------
 
-  private void processDirection() {
+	override protected void processDirection() {
 
     // have the AI tell us where to
     currentNode = nextNode;

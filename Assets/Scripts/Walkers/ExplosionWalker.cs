@@ -68,7 +68,7 @@ public class ExplosionWalker : WaypointWalker {
 
 
 
-  private void processDirection() {
+	override protected void processDirection() {
     _init = true;
     currentNode = nextNode;
 

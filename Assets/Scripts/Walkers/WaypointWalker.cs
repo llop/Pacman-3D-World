@@ -146,6 +146,7 @@ public abstract class WaypointWalker : MonoBehaviour {
   public abstract void updateDirection();
   public abstract void updateMove();
   public abstract void update();
+  protected abstract void processDirection ();
 
   public void Update() {
     if (gameManager.paused || !gameManager.inGame) return;
