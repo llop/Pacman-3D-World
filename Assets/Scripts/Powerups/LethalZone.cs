@@ -19,7 +19,11 @@ public class LethalZone : MonoBehaviour
 	}
 
 	public void OnDrawGizmos() {
+		Matrix4x4 rotationMatrix = Matrix4x4.TRS(transform.position, transform.rotation, Vector3.Scale(transform.lossyScale, GetComponent<BoxCollider>().size));
 		Gizmos.color = new Color(1, 0, 0, 0.5F);
-		Gizmos.DrawCube(transform.position, Vector3.Scale(transform.localScale, GetComponent<BoxCollider>().size));
+		Matrix4x4 tmp = Gizmos.matrix;
+		Gizmos.matrix *= rotationMatrix;
+		Gizmos.DrawCube(Vector3.zero, Vector3.one);
+		Gizmos.matrix = tmp;
 	}
 }
