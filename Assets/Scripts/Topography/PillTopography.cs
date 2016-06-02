@@ -8,7 +8,7 @@ public class PillTopography : PlanetTopography {
 
 
 
-  protected static float planetRadius = 20f;
+  protected static float planetRadius = 10f;
 
 
 
@@ -34,6 +34,8 @@ public class PillTopography : PlanetTopography {
   public override void updateRotation(Transform body, Vector3 target) {
     Vector3 bodyUp = new Vector3(body.position.x, 0f, body.position.z);
     body.rotation = Quaternion.LookRotation(target - body.position, bodyUp.normalized);
+    // correct up vector
+    body.rotation = Quaternion.FromToRotation(body.up, bodyUp.normalized) * body.rotation;
   }
 
 
@@ -67,15 +69,16 @@ public class PillTopography : PlanetTopography {
 	public override void getPelletPositions (WaypointNode one, WaypointNode two, out List<Vector3> positions) {
 		positions = new List<Vector3> ();
 		int distance = (int)calculateDistance (one.transform.position, two.transform.position);
-		Vector3 direction1 = (one.transform.position - transform.position).normalized;
-		Vector3 direction2 = (two.transform.position - transform.position).normalized;
+    Vector3 center = new Vector3(0f, (one.transform.position.y + two.transform.position.y) / 2f, 0f);
+    Vector3 direction1 = (one.transform.position - center).normalized;
+    Vector3 direction2 = (two.transform.position - center).normalized;
 
-		MeshCollider col = GetComponent<MeshCollider> ();
+		Collider col = GetComponent<Collider> ();
 
 		for (int i = 0; i <= distance; i++) {
 			float ratio = (float)i/(float)distance;
 			Vector3 direction = Vector3.Slerp (direction1, direction2, ratio);
-			Ray ray = new Ray(transform.position, direction);
+      Ray ray = new Ray(center, direction);
 			// reverse ray
 			ray.origin = ray.GetPoint (2 * planetRadius);
 			ray.direction = -direction;
@@ -83,7 +86,7 @@ public class PillTopography : PlanetTopography {
 			col.Raycast (ray, out hit, 2 * planetRadius);
 			Vector3 position = hit.point;
 			//print (position);
-			position += hit.normal * 0.5f;
+			position += hit.normal * 0.25f;
 			positions.Add (position);
 		}
 	}

@@ -75,6 +75,7 @@ public class GhostWalker : WaypointWalker {
     // ghost moves forward
     float speedMultiplier = walkSpeed * gameManager.ghostSpeedMultiplier(ai.state);
     moveAmount = Vector3.forward * speedMultiplier;
+    moveAmount = Vector3.zero;
   }
 
   public override void update() {
