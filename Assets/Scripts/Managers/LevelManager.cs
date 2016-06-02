@@ -61,7 +61,9 @@ public class LevelManager : MonoBehaviour {
 
   public void Update() {
     checkForStart();
-    if (levelComplete()) gameManager.transitionToScene(nextScene);
+		if (levelComplete ()) {
+			GameManager.Instance.transitionToScene (nextScene);
+		}
   }
 
 

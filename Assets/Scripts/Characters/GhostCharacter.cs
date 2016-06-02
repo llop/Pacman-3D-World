@@ -53,8 +53,12 @@ public class GhostCharacter : Character {
       lastState = GhostAIState.Frightened;
     }
     if (ghost.dead()) {
-      if (lastState != GhostAIState.Dead) bodyRenderer.enabled = false;
-      lastState = GhostAIState.Dead;
+			if (lastState != GhostAIState.Dead) {
+				bodyRenderer.enabled = false;
+				GameObject.FindGameObjectWithTag ("Pacman").GetComponent<PacmanSounds> ().ghostEaten ();
+			}
+			lastState = GhostAIState.Dead;
+
     }
   }
 

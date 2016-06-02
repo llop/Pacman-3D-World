@@ -12,8 +12,7 @@ public enum PacmanState {
 
 
 public class PacmanCharacter : Character {
-
-
+	
 
   private PacmanState lastState = PacmanState.Idle;
 
@@ -55,6 +54,8 @@ public class PacmanCharacter : Character {
       else if (lastState == PacmanState.JumpDown) anim.SetInteger("AnimState", 7);
       else if (lastState == PacmanState.Run) anim.SetInteger("AnimState", 9);
       lastState = PacmanState.Die;
+			GameObject.FindGameObjectWithTag("Pacman").GetComponent<PacmanSounds>().pacmanDeath();
+		
     }
 
 	}
