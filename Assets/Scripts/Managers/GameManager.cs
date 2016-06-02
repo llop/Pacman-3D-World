@@ -195,6 +195,8 @@ public class GameManager : MonoBehaviour {
 
     // kill ghost
     GhostAI ai = ghostGO.GetComponent<GhostAI>();
+    if (ai.state == GhostAIState.Dead) return;
+
     ai.state = GhostAIState.Dead;
 
     // deactivate collisions

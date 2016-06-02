@@ -13,11 +13,16 @@ public class BobOmb : MonoBehaviour {
 
   private bool _active = false;
 
+
+  public void Start() {
+    Invoke("explode", 5f); 
+  }
+
   public void Update() {
     if (!_active) return;
 
     if (Input.GetKeyDown(KeyCode.V))
-      Invoke("explode", 1f); 
+      explode();
   }
 
   public void OnCollisionEnter(Collision collision) {
