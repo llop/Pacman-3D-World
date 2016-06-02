@@ -51,7 +51,7 @@ public class HiScoreManager : MonoBehaviour {
   }
 
   public void Awake() {
-    debugInit();
+    //debugInit();
 
     _instance = this;
     _hiScores = new List<KeyValuePair<string, ulong>>();
