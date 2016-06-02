@@ -12,13 +12,23 @@ public class PelletManager : MonoBehaviour {
 
 	private HashSet<int> nodePellet;
 
+	private bool done = false;
+
+	void Start() {
+		GameManager.Instance.levelData.pelletsTotal = 1;
+	}
+
 	// Use this for initialization
-	void Start () {
+	void Update () {
+		if (done)
+			return;
 		graph = GetComponent<WaypointGraph> ();
 		topography = GetComponent<PlanetTopography> ();
 
 		nodePellet = new HashSet<int> ();
 		int count = 0;
+		print (graph.edges.Count);
+
 		foreach (WaypointEdge edge in graph.edges) {
 			if (edge.one.pacmanWalkable && edge.two.pacmanWalkable) {
 				List<Vector3> positions = new List<Vector3> ();
@@ -48,5 +58,7 @@ public class PelletManager : MonoBehaviour {
 			}
 		}
 		GameManager.Instance.levelData.pelletsTotal = count;
+
+		done = true;
 	}
 }

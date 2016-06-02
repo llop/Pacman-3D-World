@@ -55,7 +55,7 @@ public class LevelManager : MonoBehaviour {
     if (Input.GetKeyDown(KeyCode.A)) return true;
 
     LevelData levelData = gameManager.levelData;
-    return levelData.pelletsEaten == levelData.pelletsTotal;
+		return levelData.pelletsEaten == levelData.pelletsTotal;
   }
 
 

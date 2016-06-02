@@ -153,8 +153,18 @@ public abstract class WaypointWalker : MonoBehaviour {
 
     updateInput();
     updateDirection();
+		if (atNextNode () && currentNode.twin != null) {
+			currentNode = currentNode.twin;
+			nextNode = currentNode.getAdjacent(currentDirection);
+			if (nextNode == null) {
+				nextNode = currentNode;
+				currentDirection = Direction.None;
+			}
+			walkerBody.position = currentNode.transform.position;
+		}
     updateMove();
     update();
+		print (currentDirection);
   }
 
 
