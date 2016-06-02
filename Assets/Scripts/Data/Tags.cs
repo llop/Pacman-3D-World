@@ -31,6 +31,8 @@ public class Tags {
   public static string Scene01 = "Scene01";
   public static string Scene02 = "Scene02";
   public static string Scene03 = "Scene03";
+  public static string Scene04 = "Scene04";
+  public static string Scene05 = "Scene05";
   public static string HiScoreScene = "HiScoreScene";
   public static string GameOverScene = "GameOverScene";
   public static string GameCompleteScene = "GameCompleteScene";

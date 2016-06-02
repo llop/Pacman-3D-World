@@ -260,7 +260,7 @@ public class GameManager : MonoBehaviour {
       ghostModesLevel2To4.Add(new KeyValuePair<GhostAIState, float>(GhostAIState.Scatter, 1f / 60f));
       ghostModesLevel2To4.Add(new KeyValuePair<GhostAIState, float>(GhostAIState.Chase, -1f));
       return ghostModesLevel2To4;
-    } else if (_currentScene == Tags.Scene03) {
+    } else if (_currentScene == Tags.Scene04 || _currentScene == Tags.Scene05) {
       List<KeyValuePair<GhostAIState, float>> ghostModesLevel5Plus = new List<KeyValuePair<GhostAIState, float>>();
       ghostModesLevel5Plus.Add(new KeyValuePair<GhostAIState, float>(GhostAIState.Scatter, 5f));
       ghostModesLevel5Plus.Add(new KeyValuePair<GhostAIState, float>(GhostAIState.Chase, 20f));
@@ -278,7 +278,7 @@ public class GameManager : MonoBehaviour {
   public float ghostFrightenedTimeForCurrentLevel() {
     if (_currentScene == Tags.Scene01) return 5f;
     else if (_currentScene == Tags.Scene02) return 5f;
-    else if (_currentScene == Tags.Scene03) return 3f;
+    else if (_currentScene == Tags.Scene04 || _currentScene == Tags.Scene05) return 3f;
     return 5f;
   }
 
@@ -291,7 +291,7 @@ public class GameManager : MonoBehaviour {
     float multiplier = 1f;
     if (_currentScene == Tags.Scene01) multiplier = .8f;
     else if (_currentScene == Tags.Scene02) multiplier = .9f;
-    else if (_currentScene == Tags.Scene03) multiplier = 1f;
+    else if (_currentScene == Tags.Scene04 || _currentScene == Tags.Scene05) multiplier = 1f;
     if (powerTime > 0f) multiplier = Mathf.Clamp01(multiplier + .5f); 
     return multiplier;
   }
@@ -300,7 +300,7 @@ public class GameManager : MonoBehaviour {
     if (ghostState != GhostAIState.Dead) {
       if (_currentScene == Tags.Scene01) return ghostState == GhostAIState.Frightened ? .4f : .75f;
       if (_currentScene == Tags.Scene02) return ghostState == GhostAIState.Frightened ? .45f : .85f;
-      if (_currentScene == Tags.Scene03) return ghostState == GhostAIState.Frightened ? .5f : .95f;
+      if (_currentScene == Tags.Scene04 || _currentScene == Tags.Scene05) return ghostState == GhostAIState.Frightened ? .5f : .95f;
     }
     return 1f;
   }
