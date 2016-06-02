@@ -8,5 +8,6 @@ public class ExplosionEffect : EffectAction {
 
 	override public void triggerAction() {
 		GetComponent<ParticleSystem> ().Play ();
+		GetComponent<AudioSource> ().Play ();
 	}
 }
