@@ -3,10 +3,8 @@ using System.Collections;
 using UnityEngine.Events;
 
 public class Pellet : Powerup {
-  
-
   public void Awake() {
-    action = delegate {
+	    action = delegate {
       // disable some components
       GetComponent<Collider>().enabled = false;
       GetComponent<Renderer>().enabled = false;
@@ -19,9 +17,9 @@ public class Pellet : Powerup {
       GameManager gameManager = GameManager.Instance;
       gameManager.pacmanData.score += Score.Pellet;
       ++gameManager.levelData.pelletsEaten;
+
+	  GameObject.FindGameObjectWithTag("Pacman").GetComponent<PacmanSounds>().pelletEaten();
     };
   }
-
-
 
 }

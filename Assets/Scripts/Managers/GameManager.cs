@@ -420,6 +420,8 @@ public class GameManager : MonoBehaviour {
 
 
   public void transitionToScene(string sceneName) {
+		GameObject.FindGameObjectWithTag ("Pacman").GetComponent<PacmanSounds> ().levelDone ();
+
     _inGame = false;
     if (_isPlayableLevel) {
       // halt walkers

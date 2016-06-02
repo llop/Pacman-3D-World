@@ -24,6 +24,7 @@ public class PowerPellet : Powerup {
 
       // activate power mode?
       gameManager.powerPelletEaten();
+			GameObject.FindGameObjectWithTag("Pacman").GetComponent<PacmanSounds>().pelletEaten();
 
     };
   }
