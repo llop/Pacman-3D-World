@@ -7,7 +7,7 @@ public class SphereCamera : GameCamera {
 
 
 
-  public float cameraHeight = 35f;
+  public float cameraHeight = 20f;
 
 	
 

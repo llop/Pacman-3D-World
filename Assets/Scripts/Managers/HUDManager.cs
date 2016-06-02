@@ -32,10 +32,10 @@ public class HUDManager : MonoBehaviour {
     if (!gameManager.inGame) return;
 
     // pause?
-    if (Input.GetKeyDown(KeyCode.P)) {
-      pauseMenu.open = true;
-      gameManager.paused = true;
-    }
+    //if (Input.GetKeyDown(KeyCode.P)) {
+    //  pauseMenu.open = true;
+    //  gameManager.paused = true;
+    //}
 
     // write data
     PacmanData pacmanData = gameManager.pacmanData;
