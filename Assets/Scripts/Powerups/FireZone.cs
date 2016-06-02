@@ -11,11 +11,13 @@ public class FireZone : MonoBehaviour {
 	private State state;
 	private BoxCollider coll;
 	private ParticleSystem particles;
+	private AudioSource audio;
 
 	public void Start() {
 		coll = GetComponent<BoxCollider> ();
 		state = State.Initial;
 		particles = GetComponent<ParticleSystem> ();
+		audio = GetComponent<AudioSource> ();
 		particles.Stop ();
 	}
 
@@ -35,9 +37,12 @@ public class FireZone : MonoBehaviour {
 		if (state == State.Playing) {
 			coll.enabled = true;
 			particles.Play ();
+			if (!audio.isPlaying)
+				audio.Play ();
 		} else {
 			coll.enabled = false;
 			particles.Stop ();
+			audio.Stop ();
 		}
 	}
 }
