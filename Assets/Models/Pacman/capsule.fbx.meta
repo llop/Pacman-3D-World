@@ -9,13 +9,18 @@ ModelImporter:
     100002: Capsule
     100004: //RootNode
     100006: Lamp
+    100008: Capsule.001
     400000: Camera
     400002: Capsule
     400004: //RootNode
     400006: Lamp
+    400008: Capsule.001
     2300000: Capsule
+    2300002: Capsule.001
     3300000: Capsule
+    3300002: Capsule.001
     4300000: Capsule
+    4300002: Capsule.001
   materials:
     importMaterials: 1
     materialName: 0

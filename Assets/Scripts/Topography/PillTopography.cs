@@ -8,7 +8,7 @@ public class PillTopography : PlanetTopography {
 
 
 
-  protected static float planetRadius = 20f;
+  protected static float planetRadius = 10f;
 
 
 
