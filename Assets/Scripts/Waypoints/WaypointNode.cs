@@ -1,5 +1,6 @@
 ﻿using UnityEngine;
 using System.Collections;
+using System.Collections.Generic;
 
 
 
@@ -9,6 +10,8 @@ public class WaypointNode : MonoBehaviour {
   public bool pacmanWalkable = true;
   public bool powerPellet = false;
 	public WaypointNode twin = null;
+
+	public bool doMagic = false;
 
 
   private WaypointNode front;
@@ -37,8 +40,75 @@ public class WaypointNode : MonoBehaviour {
 
 
   public void Awake() {
-    GetComponent<Renderer>().enabled = false;
-  }
+		GetComponent<Renderer> ().enabled = false;
+	}
+	public void Start() {
+		if (!doMagic)
+			return;
+		SphereCollider col = GetComponent<SphereCollider> ();
+		WaypointGraph graph = GameObject.FindGameObjectWithTag ("Planet").GetComponent<WaypointGraph>();
 
+		Ray ray;
+		RaycastHit hit;
+		WaypointNode other;
+		WaypointEdge edge;
+		string[] masks = {"Waypoint"};
+		LayerMask mask = LayerMask.GetMask (masks);
 
+		if (right == null) {
+			if (Physics.Raycast(transform.position, Vector3.right, out hit, 50.0f, mask.value)) {
+				other = hit.collider.gameObject.GetComponent<WaypointNode> ();
+				if (other != null) {
+					right = other;
+					other.left = this;
+					edge = new WaypointEdge ();
+					edge.one = this;
+					edge.two = other;
+					graph.edges.Add (edge);
+				}
+			}
+		}
+		if (left == null) {
+			ray = new Ray(transform.position, Vector3.left);
+			if (Physics.Raycast(transform.position, Vector3.left, out hit, 50.0f, mask.value)) {
+				other = hit.collider.gameObject.GetComponent<WaypointNode> ();
+				if (other != null) {
+					left = other;
+					other.right = this;
+					edge = new WaypointEdge ();
+					edge.one = this;
+					edge.two = other;
+					graph.edges.Add (edge);
+				}
+			}
+		}
+		if (front == null) {
+			ray = new Ray(transform.position, Vector3.forward);
+			if (Physics.Raycast(transform.position, Vector3.forward, out hit, 50.0f, mask.value)) {
+				other = hit.collider.gameObject.GetComponent<WaypointNode> ();
+				if (other != null) {
+					front = other;
+					other.back = this;
+					edge = new WaypointEdge ();
+					edge.one = this;
+					edge.two = other;
+					graph.edges.Add (edge);
+				}
+			}
+		}
+		if (back == null) {
+			ray = new Ray(transform.position, Vector3.back);
+			if (Physics.Raycast(transform.position, Vector3.back, out hit, 50.0f, mask.value)) {
+				other = hit.collider.gameObject.GetComponent<WaypointNode> ();
+				if (other != null) {
+					back = other;
+					other.front = this;
+					edge = new WaypointEdge ();
+					edge.one = this;
+					edge.two = other;
+					graph.edges.Add (edge);
+				}
+			}
+		}
+	}
 }
