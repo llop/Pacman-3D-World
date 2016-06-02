@@ -27,7 +27,7 @@ public class PacmanSounds : MonoBehaviour {
 		} else if (player.clip == chomp && Time.time - lastTimeEaten > 0.3f) {
 			player.loop = false;
 		}
-		if (!player.isPlaying) {
+		if (!player.isPlaying && GameManager.Instance.pacmanData.alive) {
 			player.clip = steps;
 			player.Play ();
 		}
