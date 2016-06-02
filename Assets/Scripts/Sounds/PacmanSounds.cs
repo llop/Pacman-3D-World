@@ -11,12 +11,14 @@ public class PacmanSounds : MonoBehaviour {
 	public AudioClip ghost;
 	public AudioClip win;
 	public AudioClip steps;
+	private PacmanWalker walker;
 	private float lastTimeEaten;
 	// Use this for initialization
 	void Start () {
 		lastTimeEaten = 0;
 		player = GetComponent<AudioSource> ();
 		player.loop = false;
+		walker = GetComponent<PacmanWalker> ();
 	}
 
 	void Update() {
@@ -29,7 +31,7 @@ public class PacmanSounds : MonoBehaviour {
 			player.clip = steps;
 			player.Play ();
 		}
-		if (player.isPlaying && player.clip == steps && GetComponent<PacmanWalker>().direction() == Direction.None) {
+		if (player.isPlaying && player.clip == steps && (walker.direction() == Direction.None || walker.jumpingUp() || walker.jumpingDown())) {
 			player.Stop ();
 		}
 	}
