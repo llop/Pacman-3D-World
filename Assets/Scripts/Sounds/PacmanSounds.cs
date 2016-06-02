@@ -11,6 +11,7 @@ public class PacmanSounds : MonoBehaviour {
 	public AudioClip ghost;
 	public AudioClip win;
 	public AudioClip steps;
+
 	private PacmanWalker walker;
 	private float lastTimeEaten;
 	// Use this for initialization
