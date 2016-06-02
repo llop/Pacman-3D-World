@@ -62,11 +62,11 @@ public class PlaneTopography : PlanetTopography {
 	public override void getPelletPositions (WaypointNode one, WaypointNode two, out List<Vector3> positions) {
 		positions = new List<Vector3> ();
 
-		MeshCollider col = GetComponent<MeshCollider> ();
+		Collider col = GetComponent<Collider> ();
 
 		float delta = Mathf.Max (col.bounds.max.x, col.bounds.max.z);
 		Vector3 center = transform.position;
-		center.y += 2 * delta;
+		center.y += 4 * delta;
 
 		int distance = (int)calculateDistance (one.transform.position, two.transform.position);
 		Vector3 direction1 = (one.transform.position - center).normalized;
@@ -85,7 +85,7 @@ public class PlaneTopography : PlanetTopography {
 			//   -------
 			//    b = 1
 
-			col.Raycast (ray, out hit, 3.06f * delta);
+			col.Raycast (ray, out hit, 5.06f * delta);
 			Vector3 position = hit.point;
 			//print (position);
 			position += (Vector3.up) * 0.5f;

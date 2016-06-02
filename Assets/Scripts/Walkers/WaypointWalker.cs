@@ -161,9 +161,6 @@ public abstract class WaypointWalker : MonoBehaviour {
 				currentDirection = Direction.None;
 			}
 			walkerBody.position = currentNode.transform.position;
-			print ("twin");
-			print (nextNode.gameObject.transform.parent.name);
-			print (nextNode.gameObject.name);
 		}
     updateMove();
     update();
