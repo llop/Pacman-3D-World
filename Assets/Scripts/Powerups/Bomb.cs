@@ -9,7 +9,7 @@ public class Bomb : Powerup {
       
       // play sfx
       // picked-up animation?
-
+      Debug.Log("hi sdfsf");
       // add 3 bombs
       GameManager gameManager = GameManager.Instance;
       gameManager.pacmanData.bombs += 3;

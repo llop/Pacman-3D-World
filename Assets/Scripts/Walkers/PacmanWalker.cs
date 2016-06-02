@@ -12,7 +12,7 @@ public class PacmanWalker : WaypointWalker {
   //----------------------------------------------------------------------------------------------------------
 
   protected float jumpTolerance = .4f;    // used to decide when the character is descending
-  public float jumpForce = 200f;          // how high
+  public float jumpForce = 400f;          // how high
 
 
   //----------------------------------------------------------------------------------------------------------
@@ -123,8 +123,6 @@ public class PacmanWalker : WaypointWalker {
     Vector3 moveDir = isMoving ? Vector3.forward : Vector3.zero;
     float speedMultiplier = walkSpeed * gameManager.pacmanSpeedMultiplier(ai.powerTime);
     moveAmount = moveDir * speedMultiplier;
-    Debug.Log("speed "+speedMultiplier);
-    Debug.Log("curr "+speedMultiplier);
   }
 
 
@@ -192,8 +190,8 @@ public class PacmanWalker : WaypointWalker {
           isJumpingUp = false;
           isJumpingDown = false;
         }
-        Debug.DrawLine(position, position - transform.up * 1.1f);
-        Debug.Log(isGrounded?"yes":"no");
+        //Debug.DrawLine(position, position - transform.up * 1.1f);
+        //Debug.Log(isGrounded?"yes":"no");
       }
     }
   }
