@@ -29,6 +29,9 @@ public class PacmanSounds : MonoBehaviour {
 			player.clip = steps;
 			player.Play ();
 		}
+		if (player.isPlaying && player.clip == steps && GetComponent<PacmanWalker>().direction() == Direction.None) {
+			player.Stop ();
+		}
 	}
 	
 	// Update is called once per frame

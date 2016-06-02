@@ -420,7 +420,9 @@ public class GameManager : MonoBehaviour {
 
 
   public void transitionToScene(string sceneName) {
-		GameObject.FindGameObjectWithTag ("Pacman").GetComponent<PacmanSounds> ().levelDone ();
+		GameObject pacman = GameObject.FindGameObjectWithTag ("Pacman");
+		if (pacman != null)
+			pacman.GetComponent<PacmanSounds> ().levelDone ();
 
     _inGame = false;
     if (_isPlayableLevel) {
