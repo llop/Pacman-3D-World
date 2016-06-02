@@ -12,6 +12,7 @@ public class HUDManager : MonoBehaviour {
   protected GameManager gameManager;
   protected Text livesText;
   protected Text scoreText;
+  protected Text bombsText;
   protected Text pelletsText;
 
 
@@ -23,7 +24,8 @@ public class HUDManager : MonoBehaviour {
 
   public void Start() {
     livesText = GameObject.FindGameObjectWithTag(Tags.LivesText).GetComponent<Text>();
-    scoreText = GameObject.FindGameObjectWithTag(Tags.ScoreText).GetComponent<Text>();
+	scoreText = GameObject.FindGameObjectWithTag(Tags.ScoreText).GetComponent<Text>();
+		bombsText = GameObject.Find("BombText").GetComponent<Text>();
     pelletsText = GameObject.FindGameObjectWithTag(Tags.PelletsText).GetComponent<Text>();
   }
 
@@ -41,6 +43,7 @@ public class HUDManager : MonoBehaviour {
     PacmanData pacmanData = gameManager.pacmanData;
     livesText.text = new string('c', pacmanData.lives);
     scoreText.text = "" + pacmanData.score;
+	bombsText.text = "" + GameManager.Instance.pacmanData.bombs;
     LevelData levelData = gameManager.levelData;
     pelletsText.text = "" + levelData.pelletsEaten + '/' + levelData.pelletsTotal;
 	}
