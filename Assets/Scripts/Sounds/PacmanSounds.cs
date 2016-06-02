@@ -19,11 +19,10 @@ public class PacmanSounds : MonoBehaviour {
 	}
 
 	void Update() {
-		if (player.clip == chomp && Time.time - lastTimeEaten > 0.3f) {
+		if (GameManager.Instance.paused) {
+			player.Stop ();
+		} else if (player.clip == chomp && Time.time - lastTimeEaten > 0.3f) {
 			player.loop = false;
-		}
-		if (player.clip == win && !player.isPlaying) {
-			GameManager.Instance.transitionToScene (GameManager.Instance.levelManager.nextScene);
 		}
 	}
 	
