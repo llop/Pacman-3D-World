@@ -10,6 +10,7 @@ public class PacmanSounds : MonoBehaviour {
 	public AudioClip death;
 	public AudioClip ghost;
 	public AudioClip win;
+	public AudioClip steps;
 	private float lastTimeEaten;
 	// Use this for initialization
 	void Start () {
@@ -24,12 +25,16 @@ public class PacmanSounds : MonoBehaviour {
 		} else if (player.clip == chomp && Time.time - lastTimeEaten > 0.3f) {
 			player.loop = false;
 		}
+		if (!player.isPlaying) {
+			player.clip = steps;
+			player.Play ();
+		}
 	}
 	
 	// Update is called once per frame
 	public void pelletEaten () {
 		lastTimeEaten = Time.time;
-		if (!player.isPlaying) {
+		if (!player.isPlaying || player.clip == steps) {
 			player.clip = chomp;
 			player.Play ();
 			player.loop = true;
