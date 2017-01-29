@@ -4,7 +4,7 @@ Pacman 3D game using Unity 5
 
 **VJ - Q2 2015-2016 - FIB UPC**
 
-See the demo! :smile_simple:
+See the demo! :simple_smile:
   
 [![R-Type](/Assets/Images/pacman-screenshot.png)](https://www.youtube.com/watch?v=fPmqXk4-pac)
-
+  
