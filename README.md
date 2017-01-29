@@ -2,7 +2,7 @@
 
 Pacman 3D game using Unity 5
 
-**VJ - Q2 2015-2016 - FIB UPC**
+**VJ - FIB UPC - Q2 2015-2016**
 
 See the demo! :grin:
   
