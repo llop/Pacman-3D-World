@@ -1,4 +1,10 @@
-# pac-man
-3D pac-man game
+# Pacman! 3D World
 
-Pac-Man 3D Unity
+Pacman 3D game using Unity 5
+
+**VJ - Q2 2015-2016 - FIB UPC**
+
+See the demo! :smile_simple:
+  
+[![R-Type](/Assets/Images/pacman-screenshot.png)](https://www.youtube.com/watch?v=fPmqXk4-pac)
+
