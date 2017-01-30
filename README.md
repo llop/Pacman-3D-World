@@ -6,5 +6,5 @@ Pacman 3D game using Unity 5
 
 See the demo! :grin:
   
-[![R-Type](/Assets/Images/pacman-screenshot.png)](https://www.youtube.com/watch?v=fPmqXk4-pac)
+[![Pacman-3D-World](/Assets/Images/pacman-screenshot.png)](https://www.youtube.com/watch?v=fPmqXk4-pac)
   
